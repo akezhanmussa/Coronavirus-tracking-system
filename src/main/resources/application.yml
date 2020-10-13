@@ -1,0 +1,14 @@
+account:
+  authToken: "AC0517c1f084147899b5ae8070f28aa5d4"
+  accountSid: "1c19efb5b74ae825a032760e670aa413"
+  verificationSid: "VA941ff0926f2198d256b65aef0dec5a1e"
+  authId: "F998vXOc5GV2qnREiA5CD2SRFFchEjKv"
+database:
+  admin_name: "user_max"
+  admin_password: "LXyrGuRfH8Q5Rysk"
+  databaseName: "SeniorProjectDB"
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://user_max:LXyrGuRfH8Q5Rysk@seniorprojectdb.iqfpg.mongodb.net/SeniorProjectDB?retryWrites=true&w=majority
+      database: SeniorProjectDB

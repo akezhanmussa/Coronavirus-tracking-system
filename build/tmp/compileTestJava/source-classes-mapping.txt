@@ -1,0 +1,2 @@
+com/senior/server/ServerApplicationTests.java
+ com.senior.server.ServerApplicationTests
