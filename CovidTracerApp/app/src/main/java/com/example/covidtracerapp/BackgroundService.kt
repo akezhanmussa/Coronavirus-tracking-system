@@ -1,6 +1,5 @@
 package com.example.covidtracerapp
 
-import android.R
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
@@ -20,10 +19,6 @@ import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.BeaconTransmitter
 import java.util.*
 
-
-//import static com.wildanka.learnforegroundservice.App.CHANNEL_ID;
-//import android.support.annotation.Nullable;
-//import android.support.v4.app.NotificationCompat;
 class BackgroundService : Service() {
     override fun onCreate() {
         super.onCreate()

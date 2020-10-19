@@ -18,6 +18,9 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.covidtracerapp.Utils.generateUidNamespace
 import kotlinx.android.synthetic.main.activity_main.beaconsRecyclerView
@@ -38,15 +41,19 @@ private const val TAG = "MainActivity"
 const val USER_ID = "USER_ID"
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
+
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
-    var remoteBeaconsIds: MutableSet<Beacon> =
-        HashSet()
+    var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
+    private var adapter: BeaconsAdapter = BeaconsAdapter(listOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val currentUser = intent.getSerializableExtra("USER") as? User
         currentUserInfoTv.text =currentUser.toString()
+
+        beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
+        beaconsRecyclerView.adapter = adapter
 
         verifyBluetooth()
         checkPermission()
@@ -161,31 +168,24 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     override fun onBeaconServiceConnect() {
         val rangeNotifier = RangeNotifier { beacons, region ->
+            Log.d(TAG, "onBeaconServiceConnect: RANGING")
             if (beacons.isNotEmpty()) {
-                Log.d(
-                    "test_ble",
-                    "didRangeBeaconsInRegion called with beacon count:  " + beacons.size
-                )
-                val firstBeacon = beacons.iterator().next()
-                val beaconLog =
-                    "The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.distance + " meters away."
-                Log.d("test_ble_Id1", firstBeacon.id1.toString())
-                val beaconID = firstBeacon.id1.toString()
-                remoteBeaconsIds.add(firstBeacon)
+                remoteBeaconsIds.clear()
+                Log.d(TAG, "onBeaconServiceConnect: TOTAL: ${beacons.size}")
+                for (beacon in beacons){
+                    var myb = beacon.toMyBeacon()
+                    if (remoteBeaconsIds.contains(myb)){
+                        remoteBeaconsIds.remove(myb)
+                    }
+                    remoteBeaconsIds.add(myb)
 
-                //                    logToDisplay("The first beacon " + firstBeacon.toString() + " is about " + firstBeacon.getDistance() + " meters away.");
-                Log.d("test_ble", beaconLog)
-                val nearByBeaconsArray =
-                    remoteBeaconsIds.toTypedArray()
-                Arrays.sort(nearByBeaconsArray)
-                Log.d(
-                    "totalnearbybeacons",
-                    "" + (nearByBeaconsArray.size - 1).toString()
-                )
-                val adapter = BeaconsAdapter(
-                    remoteBeaconsIds.toList()
-                )
-                beaconsRecyclerView?.adapter = adapter
+                }
+
+
+
+                adapter.updateList(remoteBeaconsIds.toMutableList())
+            }else{
+                Log.d(TAG, "onBeaconServiceConnect: ISEMPTY")
             }
         }
         try {
@@ -211,7 +211,20 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 }
 
 class BeaconsAdapter (
-    private var beacons: List<Beacon>) : RecyclerView.Adapter<BeaconsAdapter.BeaconsViewHolder>() {
+    private var beacons: List<MyBeacon>) : RecyclerView.Adapter<BeaconsAdapter.BeaconsViewHolder>() {
+
+    companion object {
+        private val diffUtil = object : DiffUtil.ItemCallback<MyBeacon>() {
+
+            override fun areItemsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
+                return oldItem.id1 == newItem.id1
+            }
+
+            override fun areContentsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
+                return oldItem.distance == newItem.distance
+            }
+        }
+    }
 
     class BeaconsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val beaconId : TextView = itemView.beacon_id
@@ -226,151 +239,18 @@ class BeaconsAdapter (
 
     override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
         val currentItem = beacons[position]
-        holder.beaconId.text = currentItem.id1.toString()
-        holder.beaconDistance.text = currentItem.distance.toString()
+        holder.beaconId.text = currentItem.id1.toString().substring(2)
+        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " cm"
     }
 
     override fun getItemCount(): Int {
         return beacons.size
     }
 
-    fun updateData(newBeacons : List<Beacon> ){
-        beacons = newBeacons
+    fun updateList(newList: List<MyBeacon>){
+        beacons = newList.sortedBy { it.id1 }
         notifyDataSetChanged()
     }
 }
 
 
-
-
-//class MainActivity : AppCompatActivity(), BeaconConsumer {
-//
-//    private val beaconManager: BeaconManager = BeaconManager.getInstanceForApplication(this)
-//    lateinit var bluetoothManager: BluetoothManager
-//    lateinit var bluetoothAdapter: BluetoothAdapter
-//    private var beaconSet: Set<String>? = HashSet()
-//    private val receiver = object : BroadcastReceiver() {
-//
-//        override fun onReceive(context: Context, intent: Intent) {
-//            Log.d(TAG, "ActionName: ${intent.action}")
-//            when(intent.action) {
-//                BluetoothDevice.ACTION_FOUND -> {
-//                    // Discovery has found a device. Get the BluetoothDevice
-//                    // object and its info from the Intent.
-//                    val device: BluetoothDevice? =
-//                        intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-//                    val deviceName = device?.name
-//                    val deviceHardwareAddress = device?.address // MAC address
-//                    Log.d(TAG, "onReceiveBluetooth: $deviceName , $deviceHardwareAddress")
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//
-//        bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-//        beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(ALT_BEACON))
-//
-//
-//        requestPermissions()
-//        if (bluetoothAdapter.isDiscovering) {
-//            bluetoothAdapter.cancelDiscovery()
-//        }
-//
-//        beaconManager.bind(this)
-//
-//        var myUid : String  = getsystemID()
-//        startServiceBroadcast(myUid);
-//
-//    }
-//
-//    private fun startServiceBroadcast(uid: String) {
-//        val serviceIntent = Intent(this, BackgroundService::class.java)
-//        serviceIntent.putExtra(USER_ID, uid)
-//        ContextCompat.startForegroundService(this, serviceIntent)
-//    }
-//
-//    private fun requestPermissions() {
-//
-//        if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled){
-//            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-//            startActivityForResult(enableBtIntent,
-//                REQUEST_ENABLE_BT
-//            )
-//        }
-//
-//        if (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            )
-//            != PackageManager.PERMISSION_GRANTED
-//        ) {
-//
-//            // Permission is not granted
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                    this,
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                )
-//            ) {
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//            } else {
-//                ActivityCompat.requestPermissions(
-//                    this,
-//                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-//                    1
-//                )
-//            }
-//        }
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        // Don't forget to unregister the ACTION_FOUND receiver.
-//        unregisterReceiver(receiver)
-//    }
-//
-//    override fun onBeaconServiceConnect() {
-//        var myRegion = Region("myBeacons", null, null)
-//
-//        beaconManager.addMonitorNotifier(object:MonitorNotifier{
-//            override fun didDetermineStateForRegion(p0: Int, p1: Region?) {
-//
-//            }
-//
-//            override fun didEnterRegion(region: Region?) {
-//                Log.d(TAG, "didEnterRegion: Beacon Found: ${region?.id1}")
-//                beaconManager.startRangingBeaconsInRegion(region!!)
-//            }
-//
-//            override fun didExitRegion(region: Region?) {
-//                beaconManager.stopRangingBeaconsInRegion(region!!);
-//            }
-//        })
-//
-//        beaconManager.addRangeNotifier { beacons, region ->
-//            if (beacons!=null && !beacons.isEmpty()){
-//
-//            }
-//        }
-//    }
-//
-//    private fun getsystemID(): String {
-//        val sharedPref: SharedPreferences =
-//            getPreferences(Context.MODE_PRIVATE)
-//        var systemID: String? = sharedPref.getString(USER_ID, null)
-//        if (systemID == null) {
-//            systemID = generateUidNamespace()
-//        }
-//        val editor: SharedPreferences.Editor = sharedPref.edit()
-//        editor.putString(USER_ID, systemID)
-//        editor.commit()
-//        return systemID
-//    }
-//}
