@@ -8,8 +8,8 @@ com/senior/server/controllers/UserVerificationController.java
  com.senior.server.controllers.UserVerificationController
 com/senior/server/services/PhoneNumberVerificationServiceImpl.java
  com.senior.server.services.PhoneNumberVerificationServiceImpl
-com/senior/server/services/DataFilterServiceImpl.java
- com.senior.server.services.DataFilterServiceImpl
+com/senior/server/repositories/UserRepositoryImpl.java
+ com.senior.server.repositories.UserRepositoryImpl
 com/senior/server/services/DataFilterService.java
  com.senior.server.services.DataFilterService
 com/senior/server/configurations/AdminCredentialsConfiguration.java
@@ -24,5 +24,5 @@ com/senior/server/domain/User.java
  com.senior.server.domain.User
 com/senior/server/services/PhoneNumberVerificationService.java
  com.senior.server.services.PhoneNumberVerificationService
-com/senior/server/repositories/UserRepositoryImpl.java
- com.senior.server.repositories.UserRepositoryImpl
+com/senior/server/services/DataFilterServiceImpl.java
+ com.senior.server.services.DataFilterServiceImpl
