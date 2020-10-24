@@ -25,4 +25,10 @@ public class UserRepositoryImpl implements UserRepository{
         List<User> possibleCandidate = this.mongoTemplate.find(query, User.class);
         return possibleCandidate.isEmpty() ? null : possibleCandidate.get(0);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> allUsers = this.mongoTemplate.findAll(User.class);
+        return allUsers;
+    }
 }
