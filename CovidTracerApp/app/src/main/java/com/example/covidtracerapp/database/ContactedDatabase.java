@@ -7,7 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-@Database(entities = {ContactedEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {ContactedEntity.class}, version = 2, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class ContactedDatabase extends RoomDatabase {
 
@@ -22,7 +22,9 @@ public abstract class ContactedDatabase extends RoomDatabase {
             synchronized (ContactedDatabase.class){
                 if (sInstance == null) {
                     Log.d(LOG_TAG, "Creating a new database instance");
-                    sInstance = Room.databaseBuilder(context.getApplicationContext(), ContactedDatabase.class, DB_NAME)
+                    sInstance = Room.databaseBuilder(context, ContactedDatabase.class, DB_NAME)
+                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build();
                 }
             }
