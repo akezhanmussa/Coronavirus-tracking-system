@@ -1,11 +1,12 @@
 package com.senior.server.controllers;
 
+import com.senior.server.domain.Location;
+import com.senior.server.domain.User;
 import com.senior.server.services.DataFilterService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,6 @@ import java.util.List;
 @RequestMapping(path = "/data-api")
 public class DataRequestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserVerificationController.class);
     private DataFilterService dataFilterService;
 
     @Autowired
@@ -28,6 +28,12 @@ public class DataRequestController {
     public ResponseEntity<?> getAllPositive() {
         List<String> positiveList = dataFilterService.givePositiveInfectedPersonList();
         return new ResponseEntity<List<String>>(positiveList, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "get-all-positive-by-location", method = RequestMethod.POST)
+    public ResponseEntity<?> getAllPositiveByLocation(@RequestBody Location location) {
+        List<User> positiveList = dataFilterService.givePositiveInfectedPersonListByLocation(location);
+        return new ResponseEntity<List<User>>(positiveList, HttpStatus.OK);
     }
 
 }

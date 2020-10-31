@@ -31,6 +31,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" afterDir="false" />
@@ -40,8 +41,18 @@
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/server.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/server.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/server.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/server.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/repositories/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/repositories/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/repositories/UserRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/repositories/UserRepositoryImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/repositories/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/repositories/UserRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +72,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="server" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -168,6 +174,8 @@
       <workItem from="1602584182094" duration="1393000" />
       <workItem from="1602590079082" duration="296000" />
       <workItem from="1603516589357" duration="1645000" />
+      <workItem from="1604119405098" duration="2252000" />
+      <workItem from="1604121691881" duration="1260000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -197,7 +205,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602589383066</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="update of service and controller">
+      <created>1603529922782</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1603529922782</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,7 +247,8 @@
     <MESSAGE value="BACK&#10;* added phone verification service for sms authentication with twilio API &#10;* added controller for handling server api &#10;* added configuration for reading twilio account credentials" />
     <MESSAGE value="* created component for connecting with Mongo DB &#10;* created a basic logic id for Users&#10;* refactored code" />
     <MESSAGE value="added for heroku setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="added for heroku setup" />
+    <MESSAGE value="update of service and controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="update of service and controller" />
   </component>
   <component name="WindowStateProjectService">
     <state x="328" y="106" key="#Project_Structure" timestamp="1601990111462">
@@ -243,30 +259,34 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="511" y="334" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1601990108501" />
-    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1603517761948">
+    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1604120606512">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1603517761948" />
-    <state x="427" y="100" key="CommitChangelistDialog2" timestamp="1602589382753">
+    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1604120606512" />
+    <state x="427" y="100" key="CommitChangelistDialog2" timestamp="1603529921850">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="427" y="100" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1602589382753" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom" timestamp="1603529716503">
+    <state x="427" y="100" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1603529921850" />
+    <state width="1638" height="387" key="GridCell.Tab.0.bottom" timestamp="1604122700629">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1603529716503" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center" timestamp="1603529716502">
+    <state width="1638" height="387" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1604122700629" />
+    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.23.1680.996@0.23.1680.996" timestamp="1603546892037" />
+    <state width="1638" height="387" key="GridCell.Tab.0.center" timestamp="1604122700627">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1603529716502" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left" timestamp="1603529716502">
+    <state width="1638" height="387" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1604122700627" />
+    <state width="1638" height="287" key="GridCell.Tab.0.center/0.23.1680.996@0.23.1680.996" timestamp="1603546892036" />
+    <state width="1638" height="387" key="GridCell.Tab.0.left" timestamp="1604122700626">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1603529716502" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right" timestamp="1603529716503">
+    <state width="1638" height="387" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1604122700626" />
+    <state width="1638" height="287" key="GridCell.Tab.0.left/0.23.1680.996@0.23.1680.996" timestamp="1603546892035" />
+    <state width="1638" height="387" key="GridCell.Tab.0.right" timestamp="1604122700628">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1603529716503" />
+    <state width="1638" height="387" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1604122700628" />
+    <state width="1638" height="287" key="GridCell.Tab.0.right/0.23.1680.996@0.23.1680.996" timestamp="1603546892037" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1602047262905">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -303,21 +323,22 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state width="1638" height="354" key="GridCell.Tab.2.right/0.0.1680.1050@0.0.1680.1050" timestamp="1602047262907" />
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1602528064319">
-      <screen x="0" y="0" width="1680" height="1050" />
+    <state x="440" y="262" key="Vcs.Push.Dialog.v2" timestamp="1603529925094">
+      <screen x="0" y="23" width="1680" height="996" />
     </state>
     <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1602528064319" />
-    <state x="632" y="446" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1602584308407">
+    <state x="440" y="262" key="Vcs.Push.Dialog.v2/0.23.1680.996@0.23.1680.996" timestamp="1603529925094" />
+    <state x="632" y="446" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604121461563">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="632" y="446" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1680.1050@0.0.1680.1050" timestamp="1602584308407" />
+    <state x="632" y="446" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1680.1050@0.0.1680.1050" timestamp="1604121461563" />
     <state x="505" y="248" width="670" height="675" key="run.anything.popup" timestamp="1602527067392">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="505" y="248" width="670" height="675" key="run.anything.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1602527067392" />
-    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1602348658058">
+    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1604121124335">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1602348658058" />
+    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1604121124335" />
   </component>
 </project>
