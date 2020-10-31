@@ -5,6 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val covidModule = module{
@@ -20,6 +21,7 @@ val covidModule = module{
         Retrofit.Builder()
             .baseUrl("https://radiant-beyond-24923.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)
             .build()
     }
@@ -36,6 +38,12 @@ val covidModule = module{
 
     viewModel<LoginViewModel> {
         LoginViewModel(
+            repository = get()
+        )
+    }
+
+    viewModel<ShowBeaconsViewModel>{
+        ShowBeaconsViewModel(
             repository = get()
         )
     }
