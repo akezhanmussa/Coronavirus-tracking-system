@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -32,6 +33,7 @@ import org.altbeacon.beacon.BeaconConsumer
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
 
@@ -41,6 +43,8 @@ private const val TAG = "MainActivity"
 const val USER_ID = "USER_ID"
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
+
+    private val viewModel : ShowBeaconsViewModel by viewModel()
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
@@ -59,6 +63,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         checkPermission()
         val uid = getsystemID()
         startserviceBroadcast(uid)
+        viewModel.startTracing()
+
+        viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
+            Toast.makeText(applicationContext, "" + it, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun getsystemID(): String {
