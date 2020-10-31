@@ -1,6 +1,8 @@
 package com.example.covidtracerapp
 
 import android.util.Log
+import io.reactivex.Observable
+import kotlin.collections.HashMap
 
 class MainRepository(
     private val covidApi: CovidApi
@@ -20,5 +22,9 @@ class MainRepository(
                 positive = response["positive"] as Boolean
             )
         }
+    }
+
+    override fun getPositive(): Observable<List<String>> {
+        return covidApi.getPositive()
     }
 }

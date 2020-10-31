@@ -3,6 +3,8 @@ package com.example.covidtracerapp
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -10,10 +12,12 @@ class LoginViewModel(
     private val repository: Repository
 ) : ViewModel(){
 
-    val loginState : MutableLiveData<Resource<User>> =
-        MutableLiveData<Resource<User>>()
 
-    public fun onLoginClicked(id: String){
+
+    val loginState : MutableLiveData<Resource<User>> =
+        MutableLiveData()
+
+    fun onLoginClicked(id: String){
         viewModelScope.launch(Dispatchers.IO) {
             loginState.postValue(Resource.Loading)
             try {
