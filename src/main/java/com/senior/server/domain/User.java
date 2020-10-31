@@ -13,11 +13,16 @@ public class User {
     private String phone;
     private boolean isPositive;
     private Date datePositive;
+    private String country;
+    private String city;
 
-    public User(String phone, boolean isPositive, Date datePositive) {
+
+    public User(String phone, boolean isPositive, Date datePositive, String country, String city) {
         this.phone = phone;
         this.isPositive = isPositive;
         this.datePositive = datePositive;
+        this.country = country;
+        this.city = city;
     }
 
     public String getId() {
@@ -52,13 +57,30 @@ public class User {
         this.datePositive = datePositive;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", phone='" + phone + '\'' +
                 ", isPositive=" + isPositive +
                 ", datePositive=" + datePositive +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

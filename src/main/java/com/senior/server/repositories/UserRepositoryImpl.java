@@ -17,8 +17,8 @@ import java.util.List;
 @Component
 public class UserRepositoryImpl implements UserRepository{
 
-    private static final String cityAttribute = "City";
-    private static final String countryAttribute = "Country";
+    private static final String cityAttribute = "city";
+    private static final String countryAttribute = "country";
     private static final String isPositiveAttribute = "isPositive";
 
     private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
