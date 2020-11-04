@@ -1,5 +1,6 @@
 package com.senior.server.services;
-import com.senior.server.controllers.UserVerificationController;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.senior.server.domain.Location;
 import com.senior.server.domain.User;
 import com.senior.server.repositories.UserRepository;
@@ -8,15 +9,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.PostConstruct;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class DataFilterServiceImpl implements DataFilterService{
 
     private UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(DataFilterServiceImpl.class);
+    private LoadingCache<Location, Set<User>> cacheOnInfectedPersonsByLocation;
+
+    @PostConstruct
+    public void init() {
+        this.cacheOnInfectedPersonsByLocation = Caffeine.newBuilder()
+                .maximumSize(1)
+                .expireAfterWrite(1, TimeUnit.HOURS)
+                .recordStats()
+                .build(location -> new HashSet(userRepository.getByLocation(location, true)));
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -36,9 +47,26 @@ public class DataFilterServiceImpl implements DataFilterService{
     }
 
     @Override
-    public List<User> givePositiveInfectedPersonListByLocation(Location location) {
+    public Set<User> givePositiveInfectedPersonSetByLocation(Location location) {
         logger.info("GOT LOCATION : " + "COUNTRY - " + location.getCountry() + " CITY - " + location.getCity());
-        List<User> userList = userRepository.getByLocation(location, true);
-        return userList;
+        return this.cacheOnInfectedPersonsByLocation.get(location);
+    }
+
+    @Override
+    public List<User> findIntersectionWithInfectedList(Location location, List<String> idList) {
+        Set<User> positiveInfectedList = givePositiveInfectedPersonSetByLocation(location);
+        List<User> intersectionList = new ArrayList();
+        Set<String> idSet = new HashSet(idList);
+        logger.info("INFECTED: " + positiveInfectedList);
+        for (String id: idSet) {
+            for (User positiveInfected: positiveInfectedList) {
+                if (positiveInfected.getId().equals(id)) {
+                    intersectionList.add(positiveInfected);
+                    break;
+                }
+            }
+        }
+
+        return intersectionList;
     }
 }

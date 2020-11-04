@@ -6,12 +6,10 @@ import com.senior.server.services.DataFilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/data-api")
@@ -27,13 +25,22 @@ public class DataRequestController {
     @RequestMapping(path = "get-all-positive", method = RequestMethod.GET)
     public ResponseEntity<?> getAllPositive() {
         List<String> positiveList = dataFilterService.givePositiveInfectedPersonList();
-        return new ResponseEntity<List<String>>(positiveList, HttpStatus.OK);
+        return new ResponseEntity(positiveList, HttpStatus.OK);
     }
 
     @RequestMapping(path = "get-all-positive-by-location", method = RequestMethod.POST)
     public ResponseEntity<?> getAllPositiveByLocation(@RequestBody Location location) {
-        List<User> positiveList = dataFilterService.givePositiveInfectedPersonListByLocation(location);
-        return new ResponseEntity<List<User>>(positiveList, HttpStatus.OK);
+        Set<User> positiveList = dataFilterService.givePositiveInfectedPersonSetByLocation(location);
+        return new ResponseEntity(positiveList, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "check-positive-with-my-list", method = RequestMethod.POST)
+    public ResponseEntity<?> checkPositiveWithList(
+            @RequestBody List<String> users,
+            @RequestParam String city,
+            @RequestParam String country) {
+        List<User> intersectionList = dataFilterService.findIntersectionWithInfectedList(new Location(country, city), users);
+        return new ResponseEntity(intersectionList, HttpStatus.OK);
     }
 
 }
