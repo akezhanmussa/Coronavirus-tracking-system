@@ -264,7 +264,7 @@ class BeaconsAdapter (
     override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
         val currentItem = beacons[position]
         holder.beaconId.text = currentItem.id1.toString().substring(2)
-        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " cm"
+        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " m"
     }
 
     override fun getItemCount(): Int {
