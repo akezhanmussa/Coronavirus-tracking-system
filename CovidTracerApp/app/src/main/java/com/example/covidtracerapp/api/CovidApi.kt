@@ -1,5 +1,6 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.api
 
+import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,8 +20,11 @@ interface CovidApi {
     @POST("api/database-check")
     suspend fun login(@Body id: Map<String, String>): Map<String, Object>
 
-    @GET("data-api//get-all-positive")
+    @GET("data-api/get-all-positive")
     fun getPositive() : Observable<List<String>>
+
+    @POST("data-api/get-all-positive-by-location")
+    fun getPositiveByLocation(@Body location: Map<String, String>) : Observable<List<User>>
 
 //    @GET("history")
 //    suspend fun getDetails(@Query("country") country: String): DetailsRemoteDTOX

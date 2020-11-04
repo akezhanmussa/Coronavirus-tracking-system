@@ -1,4 +1,4 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.presentation.model
 
 import org.altbeacon.beacon.Identifier
 import org.altbeacon.beacon.Beacon
@@ -18,7 +18,7 @@ class MyBeacon(
     }
 }
 
-fun Beacon.toMyBeacon() : MyBeacon{
+fun Beacon.toMyBeacon() : MyBeacon {
     return MyBeacon(
         distance = this.distance * 100,
         bluetoothAddress = this.bluetoothAddress,

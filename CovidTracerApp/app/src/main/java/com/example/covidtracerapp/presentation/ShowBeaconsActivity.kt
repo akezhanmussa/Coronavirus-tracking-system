@@ -1,4 +1,4 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.presentation
 
 import android.Manifest
 import android.app.AlertDialog
@@ -8,39 +8,41 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
-import android.provider.Contacts
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covidtracerapp.App
+import com.example.covidtracerapp.BackgroundService
+import com.example.covidtracerapp.presentation.model.MyBeacon
+import com.example.covidtracerapp.R
+import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.Utils.generateUidNamespace
+import com.example.covidtracerapp.presentation.model.toMyBeacon
 import kotlinx.android.synthetic.main.activity_main.beaconsRecyclerView
 import kotlinx.android.synthetic.main.activity_main.currentUserInfoTv
 import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_distance
 import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_id
-import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconConsumer
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.util.*
 
 
 const val REQUEST_ENABLE_BT = 1
 const val ALT_BEACON = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
 private const val TAG = "MainActivity"
 const val USER_ID = "USER_ID"
+var USER_CITY : String = ""
+var USER_COUNTRY : String = ""
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
@@ -48,13 +50,16 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
-    private var adapter: BeaconsAdapter = BeaconsAdapter(listOf())
+    private var adapter: BeaconsAdapter =
+        BeaconsAdapter(listOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val currentUser = intent.getSerializableExtra("USER") as? User
         currentUserInfoTv.text =currentUser.toString()
+        USER_CITY = currentUser!!.city
+        USER_COUNTRY = currentUser!!.country
 
         beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
         beaconsRecyclerView.adapter = adapter
@@ -63,10 +68,17 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         checkPermission()
         val uid = getsystemID()
         startserviceBroadcast(uid)
-        viewModel.startTracing()
+        viewModel.startTracing(
+            USER_CITY,
+            USER_COUNTRY
+        )
 
         viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
-            Toast.makeText(applicationContext, "" + it, Toast.LENGTH_SHORT).show()
+            var users = ""
+            for (user in it){
+                users = users + user + "\n\n"
+            }
+            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
     }
 
@@ -241,9 +253,12 @@ class BeaconsAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeaconsViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.beacons_list_item,
+        val itemView = LayoutInflater.from(parent.context).inflate(
+            R.layout.beacons_list_item,
             parent, false)
-        return BeaconsViewHolder(itemView)
+        return BeaconsViewHolder(
+            itemView
+        )
     }
 
     override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
