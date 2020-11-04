@@ -20,12 +20,31 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:main" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:back" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="" />
+    <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileContent/fileContent.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.1.1/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/domain/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/domain/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +80,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="back" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -149,6 +168,10 @@
       <workItem from="1603516589357" duration="1645000" />
       <workItem from="1604119405098" duration="2252000" />
       <workItem from="1604121691881" duration="1260000" />
+      <workItem from="1604478179198" duration="337000" />
+      <workItem from="1604495085928" duration="573000" />
+      <workItem from="1604497691286" duration="1557000" />
+      <workItem from="1604500299509" duration="2830000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -209,7 +232,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="back" />
                       </list>
                     </value>
                   </entry>
@@ -240,34 +263,34 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="511" y="334" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1601990108501" />
-    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1604125246534">
+    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1604501535484">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1604125246534" />
+    <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1604501535484" />
     <state x="427" y="100" key="CommitChangelistDialog2" timestamp="1604125469426">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="427" y="100" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1604125469426" />
-    <state width="1638" height="387" key="GridCell.Tab.0.bottom" timestamp="1604125443639">
+    <state width="1638" height="387" key="GridCell.Tab.0.bottom" timestamp="1604502914793">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="387" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1604125443639" />
-    <state width="1638" height="287" key="GridCell.Tab.0.bottom/0.23.1680.996@0.23.1680.996" timestamp="1603546892037" />
-    <state width="1638" height="387" key="GridCell.Tab.0.center" timestamp="1604125443637">
+    <state width="1638" height="387" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1604502914793" />
+    <state width="1638" height="387" key="GridCell.Tab.0.bottom/0.23.1680.996@0.23.1680.996" timestamp="1604256686811" />
+    <state width="1638" height="387" key="GridCell.Tab.0.center" timestamp="1604502914791">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="387" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1604125443637" />
-    <state width="1638" height="287" key="GridCell.Tab.0.center/0.23.1680.996@0.23.1680.996" timestamp="1603546892036" />
-    <state width="1638" height="387" key="GridCell.Tab.0.left" timestamp="1604125443636">
+    <state width="1638" height="387" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1604502914791" />
+    <state width="1638" height="387" key="GridCell.Tab.0.center/0.23.1680.996@0.23.1680.996" timestamp="1604256686810" />
+    <state width="1638" height="387" key="GridCell.Tab.0.left" timestamp="1604502914791">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="387" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1604125443636" />
-    <state width="1638" height="287" key="GridCell.Tab.0.left/0.23.1680.996@0.23.1680.996" timestamp="1603546892035" />
-    <state width="1638" height="387" key="GridCell.Tab.0.right" timestamp="1604125443638">
+    <state width="1638" height="387" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1604502914791" />
+    <state width="1638" height="387" key="GridCell.Tab.0.left/0.23.1680.996@0.23.1680.996" timestamp="1604256686808" />
+    <state width="1638" height="387" key="GridCell.Tab.0.right" timestamp="1604502914792">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="387" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1604125443638" />
-    <state width="1638" height="287" key="GridCell.Tab.0.right/0.23.1680.996@0.23.1680.996" timestamp="1603546892037" />
+    <state width="1638" height="387" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1604502914792" />
+    <state width="1638" height="387" key="GridCell.Tab.0.right/0.23.1680.996@0.23.1680.996" timestamp="1604256686811" />
     <state width="1638" height="354" key="GridCell.Tab.1.bottom" timestamp="1602047262905">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -317,9 +340,9 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="505" y="248" width="670" height="675" key="run.anything.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1602527067392" />
-    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1604125243512">
+    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup" timestamp="1604501215120">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1604125243512" />
+    <state x="104" y="233" width="670" height="676" key="search.everywhere.popup/0.0.1680.1050@0.0.1680.1050" timestamp="1604501215120" />
   </component>
 </project>
