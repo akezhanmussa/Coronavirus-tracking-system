@@ -1,7 +1,13 @@
 package com.example.covidtracerapp.presentation.model
 
+import com.example.covidtracerapp.Utils
+import com.example.covidtracerapp.Utils.A
+import com.example.covidtracerapp.Utils.B
+import com.example.covidtracerapp.Utils.C
+import com.example.covidtracerapp.Utils.T
 import org.altbeacon.beacon.Identifier
 import org.altbeacon.beacon.Beacon
+import kotlin.math.pow
 
 class MyBeacon(
     var distance: Double,
@@ -20,9 +26,13 @@ class MyBeacon(
 
 fun Beacon.toMyBeacon() : MyBeacon {
     return MyBeacon(
-        distance = this.distance * 100,
+        distance = findDistance(),
         bluetoothAddress = this.bluetoothAddress,
         bluetoothName = this.bluetoothName,
         id1 = this.id1
     )
+}
+
+fun Beacon.findDistance() : Double {
+    return A * (rssi/T.toDouble()).pow(B) + C
 }
