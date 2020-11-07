@@ -10,6 +10,8 @@ interface Repository {
     fun getPositive() : Observable<List<String>>
     fun getPositiveByLocation(country: String, city: String) : Observable<List<User>>
     suspend fun getAllContacted() : List<ContactedEntity>
+    suspend fun getAllContactedIds() : List<String>
     suspend fun insertContacted(contactedEntity: ContactedEntity)
+    suspend fun sendContacted(city: String, country: String, contactedIds: List<String>) : List<User>
     suspend fun deleteContacted(contactedEntity: ContactedEntity)
 }

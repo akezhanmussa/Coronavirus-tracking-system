@@ -24,17 +24,28 @@ class ShowBeaconsViewModel(
         MutableLiveData()
 
     fun startTracing(city: String, country: String){
-        disposable.add(
-            repository.getPositiveByLocation(city, country)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .repeatWhen { completed -> completed.delay(10, TimeUnit.SECONDS) }
-                .subscribe({
-                    listOfPositive.value = it
-                }, {
-                    Log.d("TAG", "List of positive: ERROR")
-                })
-        )
+//        disposable.add(
+//            repository.getAllContactedIds()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .repeatWhen { completed -> completed.delay(10, TimeUnit.SECONDS) }
+//                .subscribe({
+//                    viewModelScope.launch {
+//                        var res = repository.sendContacted(city, country, it)
+//                        Log.d("TAG", "startTracing: " + res)
+//                    }
+//                }, {
+//                    Log.d("TAG", "List of positive: ERROR")
+//                })
+//        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+
+            var list  : List<String> = repository.getAllContactedIds()
+            var res = repository.sendContacted(city, country, list)
+            Log.d("TAG", "startTracing: " + res[0].id)
+
+        }
     }
 
     fun insertContacted(contactedEntity: ContactedEntity){

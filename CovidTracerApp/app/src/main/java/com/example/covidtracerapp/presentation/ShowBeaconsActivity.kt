@@ -69,12 +69,15 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         checkPermission()
         val uid = currentUser!!.id
         startserviceBroadcast(uid)
-        viewModel.startTracing(
-            USER_CITY,
-            USER_COUNTRY
-        )
 
-        var simulate = true
+        sendData.setOnClickListener {
+            viewModel.startTracing(
+                USER_CITY,
+                USER_COUNTRY
+            )
+        }
+
+        var simulate = false
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()

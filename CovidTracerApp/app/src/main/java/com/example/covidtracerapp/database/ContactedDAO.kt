@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import io.reactivex.Observable
 
 @Dao
 interface ContactedDAO {
@@ -16,4 +17,7 @@ interface ContactedDAO {
 
     @Query("SELECT * FROM $ContactedTable")
     suspend fun getAllContacted() : List<ContactedEntity>
+
+    @Query("SELECT id FROM $ContactedTable")
+    suspend fun getAllContactedIds() : List<String>
 }

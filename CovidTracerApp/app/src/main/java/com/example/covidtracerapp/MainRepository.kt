@@ -47,8 +47,17 @@ class MainRepository(
         return contactedDAO.getAllContacted()
     }
 
+    override suspend fun getAllContactedIds(): List<String> {
+        return contactedDAO.getAllContactedIds()
+    }
+
     override suspend fun insertContacted(contactedEntity: ContactedEntity) {
         contactedDAO.insertContacted(contactedEntity)
+    }
+
+    override suspend fun sendContacted(city: String, country: String, contactedIds: List<String>) : List<User> {
+//        return covidApi.sendContactedIds(city, country, contactedIds)
+        return covidApi.sendContactedIds("Astana", "Kazakhstan", listOf("010101000002", "010101000004"))
     }
 
     override suspend fun deleteContacted(contactedEntity: ContactedEntity) {

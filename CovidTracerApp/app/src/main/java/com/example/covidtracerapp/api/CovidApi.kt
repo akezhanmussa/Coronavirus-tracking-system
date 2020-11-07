@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 
 interface CovidApi {
@@ -25,6 +26,11 @@ interface CovidApi {
 
     @POST("data-api/get-all-positive-by-location")
     fun getPositiveByLocation(@Body location: Map<String, String>) : Observable<List<User>>
+
+    @POST("data-api/check-positive-with-my-list")
+    suspend fun sendContactedIds(@Query("city") city: String,
+                                 @Query("country") country: String,
+                                 @Body ids: List<String>) : List<User>
 
 //    @GET("history")
 //    suspend fun getDetails(@Query("country") country: String): DetailsRemoteDTOX
