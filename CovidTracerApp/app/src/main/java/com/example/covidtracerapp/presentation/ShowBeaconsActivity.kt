@@ -67,7 +67,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
         verifyBluetooth()
         checkPermission()
-        val uid = getsystemID()
+        val uid = currentUser!!.id
         startserviceBroadcast(uid)
         viewModel.startTracing(
             USER_CITY,
@@ -104,7 +104,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private fun startserviceBroadcast(uid: String) {
         val serviceIntent = Intent(this, BackgroundService::class.java)
-        serviceIntent.putExtra(sysIdKey, uid)
+        val zeros = "00000000"
+        serviceIntent.putExtra(sysIdKey, uid + zeros)
 
 //        application.enableMonitoring();
         ContextCompat.startForegroundService(this, serviceIntent)
@@ -272,7 +273,7 @@ class BeaconsAdapter (
 
     override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
         val currentItem = beacons[position]
-        holder.beaconId.text = currentItem.id1.toString().substring(2)
+        holder.beaconId.text = currentItem.id1.toString().substring(2, 14)
         holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " m"
     }
 
