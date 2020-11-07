@@ -51,6 +51,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
     private var adapter: BeaconsAdapter =
         BeaconsAdapter(listOf())
+    private var contactedSet: MutableSet<String> = mutableSetOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -72,7 +74,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             USER_COUNTRY
         )
 
-        var simulate = false
+        var simulate = true
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()
@@ -203,12 +205,12 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     if (remoteBeaconsIds.contains(myb)){
                         remoteBeaconsIds.remove(myb)
                     }
-                    if(myb.distance < 3) {
-                        viewModel.insertContacted(ContactedEntity(myb.id1.toString(), Calendar.getInstance().time))
-                        Log.d(TAG, "Inserted: " + myb.id1.toString())
+                    if(myb.distance < 3 && !contactedSet.contains(myb.id1.toString())) {
+                        contactedSet.add(myb.id1.toString())
+                        viewModel.insertContacted(ContactedEntity(myb.id1.toString().substring(2,14), Calendar.getInstance().time))
+                        Log.d(TAG, "Inserted: " + myb.id1.toString().substring(2,14))
                     }
                     remoteBeaconsIds.add(myb)
-
                 }
 
                 adapter.updateList(remoteBeaconsIds.toMutableList())
