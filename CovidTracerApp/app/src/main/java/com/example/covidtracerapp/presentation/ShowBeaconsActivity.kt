@@ -21,20 +21,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.covidtracerapp.App
 import com.example.covidtracerapp.BackgroundService
-import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.R
-import com.example.covidtracerapp.presentation.model.User
+import com.example.covidtracerapp.TimedBeaconSimulator
 import com.example.covidtracerapp.Utils.generateUidNamespace
+import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.presentation.model.MyBeacon
+import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
-import kotlinx.android.synthetic.main.activity_main.beaconsRecyclerView
-import kotlinx.android.synthetic.main.activity_main.currentUserInfoTv
-import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_distance
-import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_id
-import org.altbeacon.beacon.BeaconConsumer
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.RangeNotifier
-import org.altbeacon.beacon.Region
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.beacons_list_item.view.*
+import org.altbeacon.beacon.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.*
 
 
 const val REQUEST_ENABLE_BT = 1
@@ -47,6 +45,7 @@ var USER_COUNTRY : String = ""
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private val viewModel : ShowBeaconsViewModel by viewModel()
+    private val timedSimulator = TimedBeaconSimulator()
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
@@ -73,6 +72,12 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             USER_COUNTRY
         )
 
+        var simulate = false
+        if(simulate) {
+            BeaconManager.setBeaconSimulator(timedSimulator)
+            timedSimulator.createBasicSimulatedBeacons()
+            timedSimulator.beacons.get(0).toMyBeacon()
+        }
         viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
             var users = ""
             for (user in it){
@@ -198,11 +203,13 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     if (remoteBeaconsIds.contains(myb)){
                         remoteBeaconsIds.remove(myb)
                     }
+                    if(myb.distance < 3) {
+                        viewModel.insertContacted(ContactedEntity(myb.id1.toString(), Calendar.getInstance().time))
+                        Log.d(TAG, "Inserted: " + myb.id1.toString())
+                    }
                     remoteBeaconsIds.add(myb)
 
                 }
-
-
 
                 adapter.updateList(remoteBeaconsIds.toMutableList())
             }else{
