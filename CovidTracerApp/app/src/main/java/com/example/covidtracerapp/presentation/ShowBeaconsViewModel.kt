@@ -53,6 +53,7 @@ class ShowBeaconsViewModel(
             dbState.postValue(Resource.Loading)
             try {
                 repository.insertContacted(contactedEntity)
+                Log.d(ShowBeaconsViewModel::class.java.simpleName, "Inserted")
                 dbState.postValue(Resource.Success(listOf()))
             } catch (throwable: Throwable) {
                 dbState.postValue(

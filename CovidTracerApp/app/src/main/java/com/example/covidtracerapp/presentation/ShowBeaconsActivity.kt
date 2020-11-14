@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,9 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         setContentView(R.layout.activity_main)
 
         val currentUser = intent.getSerializableExtra("USER") as? User
-        currentUserInfoTv.text =currentUser.toString()
+
+        currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
+                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city)
         USER_CITY = currentUser!!.city
         USER_COUNTRY = currentUser!!.country
 
@@ -77,7 +80,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             )
         }
 
-        var simulate = false
+        var simulate = true
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()
