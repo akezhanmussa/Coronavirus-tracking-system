@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -32,6 +34,19 @@ public class DataRequestController {
     public ResponseEntity<?> getAllPositiveByLocation(@RequestBody Location location) {
         Set<User> positiveList = dataFilterService.givePositiveInfectedPersonSetByLocation(location);
         return new ResponseEntity(positiveList, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "set-to-be-infected", method = RequestMethod.POST)
+    public ResponseEntity<?> setToBeInfectedWithId(@RequestBody Map<String, String> body) {
+        String id = body.getOrDefault("id", "");
+        boolean  wasUpdated = dataFilterService.setPersonToBeInfected(id);
+        Map<String, String> response = new HashMap();
+        if (wasUpdated) {
+            response.put("status", id + " was updated");
+        } else {
+            response.put("status", id + " was not updated  since it does not exist in DB");
+        }
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @RequestMapping(path = "check-positive-with-my-list", method = RequestMethod.POST)

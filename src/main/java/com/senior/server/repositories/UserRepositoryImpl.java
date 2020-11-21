@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -40,6 +41,18 @@ public class UserRepositoryImpl implements UserRepository{
     public List<User> getAllUsers() {
         List<User> allUsers = this.mongoTemplate.findAll(User.class);
         return allUsers;
+    }
+
+    @Override
+    public boolean setPersonToBeInfectedWithId(String id) {
+        if (getUserWithId(id) == null) {
+            return false;
+        }
+        Query query = new Query(Criteria.where("id").is(id));
+        Update update = new Update();
+        update.set("isPositive", true);
+        mongoTemplate.updateFirst(query, update, User.class);
+        return true;
     }
 
     @Override

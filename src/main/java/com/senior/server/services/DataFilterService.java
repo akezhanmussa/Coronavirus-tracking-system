@@ -9,4 +9,5 @@ public interface DataFilterService {
     List<String> givePositiveInfectedPersonList();
     Set<User> givePositiveInfectedPersonSetByLocation(Location location);
     List<User> findIntersectionWithInfectedList(Location location, List<String> idList);
+    boolean setPersonToBeInfected(String id);
 }

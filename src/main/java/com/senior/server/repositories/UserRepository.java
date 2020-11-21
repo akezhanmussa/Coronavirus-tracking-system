@@ -9,4 +9,5 @@ public interface UserRepository {
     User getUserWithId(String id);
     List<User> getAllUsers();
     List<User> getByLocation(Location location, Boolean isPositive);
+    boolean setPersonToBeInfectedWithId(String id);
 }

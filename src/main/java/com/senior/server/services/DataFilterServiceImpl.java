@@ -35,6 +35,12 @@ public class DataFilterServiceImpl implements DataFilterService{
     }
 
     @Override
+    public boolean setPersonToBeInfected(String id) {
+        boolean wasUpdated = userRepository.setPersonToBeInfectedWithId(id);
+        return wasUpdated;
+    }
+
+    @Override
     public List<String> givePositiveInfectedPersonList() {
         List<String> infectedPersonList = new ArrayList();
         List<User> allUsers = userRepository.getAllUsers();
@@ -45,6 +51,7 @@ public class DataFilterServiceImpl implements DataFilterService{
         }
         return infectedPersonList;
     }
+
 
     @Override
     public Set<User> givePositiveInfectedPersonSetByLocation(Location location) {
