@@ -31,8 +31,7 @@ public class UserVerificationController {
         this.phoneNumberVerificationService = phoneNumberVerificationService;
         this.userRepository = userRepository;
     }
-
-
+    
     @RequestMapping(path = "database-check", method = RequestMethod.POST)
     public ResponseEntity<?> checkIdInDatabase(@RequestBody Map<String, String> requestBody){
         String id = requestBody.getOrDefault("id", "-1");

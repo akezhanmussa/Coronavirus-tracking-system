@@ -61,6 +61,7 @@ public class DataFilterServiceImpl implements DataFilterService{
 
     @Override
     public List<User> findIntersectionWithInfectedList(Location location, List<String> idList) {
+        logger.info("REQUESTED LIST: " + idList);
         Set<User> positiveInfectedList = givePositiveInfectedPersonSetByLocation(location);
         List<User> intersectionList = new ArrayList();
         Set<String> idSet = new HashSet(idList);
@@ -73,7 +74,7 @@ public class DataFilterServiceImpl implements DataFilterService{
                 }
             }
         }
-
+        logger.info("INTERSECTION LIST: " + intersectionList);
         return intersectionList;
     }
 }
