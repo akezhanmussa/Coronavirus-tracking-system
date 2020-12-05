@@ -24,7 +24,7 @@ public class DataFilterServiceImpl implements DataFilterService{
     public void init() {
         this.cacheOnInfectedPersonsByLocation = Caffeine.newBuilder()
                 .maximumSize(1)
-                .expireAfterWrite(1, TimeUnit.HOURS)
+                .expireAfterWrite(10, TimeUnit.SECONDS)
                 .recordStats()
                 .build(location -> new HashSet(userRepository.getByLocation(location, true)));
     }

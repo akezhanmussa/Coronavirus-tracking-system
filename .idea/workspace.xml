@@ -20,15 +20,13 @@
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="BRANCH:back" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:main" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/UserVerificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/UserVerificationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,6 +146,7 @@
         <item itemvalue="Gradle.Coronavirus-tracking-system [bootRun]" />
         <item itemvalue="Gradle.Coronavirus-tracking-system [bootRun]" />
         <item itemvalue="Gradle.Coronavirus-tracking-system [bootRun]" />
+        <item itemvalue="Gradle.Coronavirus-tracking-system [bootRun]" />
       </list>
     </recent_temporary>
   </component>
@@ -176,6 +175,7 @@
       <workItem from="1605939953726" duration="767000" />
       <workItem from="1605942078825" duration="10000" />
       <workItem from="1605944791734" duration="662000" />
+      <workItem from="1607148662532" duration="297000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -243,7 +243,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="back" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -264,7 +264,8 @@
     <MESSAGE value="update of service and controller" />
     <MESSAGE value="added new attributes to the User pojo" />
     <MESSAGE value="added new endpoint for updating the infection attribute of requested person" />
-    <option name="LAST_COMMIT_MESSAGE" value="added new endpoint for updating the infection attribute of requested person" />
+    <MESSAGE value="added logs for DataRequestController" />
+    <option name="LAST_COMMIT_MESSAGE" value="added logs for DataRequestController" />
   </component>
   <component name="WindowStateProjectService">
     <state x="328" y="106" key="#Project_Structure" timestamp="1601990111462">
