@@ -79,7 +79,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="back" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -175,7 +175,7 @@
       <workItem from="1605939953726" duration="767000" />
       <workItem from="1605942078825" duration="10000" />
       <workItem from="1605944791734" duration="662000" />
-      <workItem from="1607148662532" duration="297000" />
+      <workItem from="1607148662532" duration="867000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -226,7 +226,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605939150220</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="modified timer for cache">
+      <created>1607149237700</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1607149237700</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +272,8 @@
     <MESSAGE value="added new attributes to the User pojo" />
     <MESSAGE value="added new endpoint for updating the infection attribute of requested person" />
     <MESSAGE value="added logs for DataRequestController" />
-    <option name="LAST_COMMIT_MESSAGE" value="added logs for DataRequestController" />
+    <MESSAGE value="modified timer for cache" />
+    <option name="LAST_COMMIT_MESSAGE" value="modified timer for cache" />
   </component>
   <component name="WindowStateProjectService">
     <state x="328" y="106" key="#Project_Structure" timestamp="1601990111462">
@@ -280,10 +288,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1605938036469" />
-    <state x="427" y="100" key="CommitChangelistDialog2" timestamp="1605939149081">
+    <state x="427" y="100" key="CommitChangelistDialog2" timestamp="1607149237428">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="427" y="100" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1605939149081" />
+    <state x="427" y="100" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1607149237428" />
     <state width="1638" height="237" key="GridCell.Tab.0.bottom" timestamp="1605939934924">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
@@ -348,10 +356,10 @@
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="480" y="293" key="MultipleFileMergeDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1604504652981" />
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605939155444">
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1607149241684">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1605939155444" />
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1607149241684" />
     <state x="440" y="262" key="Vcs.Push.Dialog.v2/0.23.1680.996@0.23.1680.996" timestamp="1603529925094" />
     <state x="632" y="446" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1604121461563">
       <screen x="0" y="0" width="1680" height="1050" />
