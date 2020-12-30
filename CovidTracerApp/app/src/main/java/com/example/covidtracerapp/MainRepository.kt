@@ -12,8 +12,10 @@ class MainRepository(
     private val covidApi: CovidApi,
     private val contactedDAO: ContactedDAO
 ) : Repository {
+
+    val body: HashMap<String, String> = HashMap()
+
     override suspend fun login(id: String): User {
-        val body: HashMap<String, String> = HashMap()
         body["id"] = id
         var response = covidApi.login(body)
         if (response["errorMessage"]!=null){
@@ -29,6 +31,11 @@ class MainRepository(
                 country = response["country"] as String
             )
         }
+    }
+
+    override suspend fun selfReveal(id: String) {
+        body["id"] = id
+        covidApi.selfReveal(body)
     }
 
     override fun getPositive(): Observable<List<String>> {
@@ -56,8 +63,8 @@ class MainRepository(
     }
 
     override suspend fun sendContacted(city: String, country: String, contactedIds: List<String>) : List<User> {
-//        return covidApi.sendContactedIds(city, country, contactedIds)
-        return covidApi.sendContactedIds("Astana", "Kazakhstan", listOf("010101000002", "010101000004"))
+        return covidApi.sendContactedIds(city, country, contactedIds)
+//        return covidApi.sendContactedIds("Astana", "Kazakhstan", listOf("010101000002", "010101000004"))
     }
 
     override suspend fun deleteContacted(contactedEntity: ContactedEntity) {

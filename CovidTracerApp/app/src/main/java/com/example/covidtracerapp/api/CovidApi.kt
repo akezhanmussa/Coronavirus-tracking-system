@@ -21,6 +21,9 @@ interface CovidApi {
     @POST("api/database-check")
     suspend fun login(@Body id: Map<String, String>): Map<String, Object>
 
+    @POST("data-api/set-to-be-infected")
+    suspend fun selfReveal(@Body id: Map<String, String>)
+
     @GET("data-api/get-all-positive")
     fun getPositive() : Observable<List<String>>
 

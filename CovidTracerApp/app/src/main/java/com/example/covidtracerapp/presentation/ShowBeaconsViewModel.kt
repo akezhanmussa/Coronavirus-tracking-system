@@ -1,6 +1,7 @@
 package com.example.covidtracerapp.presentation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,31 +21,47 @@ class ShowBeaconsViewModel(
 
     private val disposable = CompositeDisposable()
     val listOfPositive : MutableLiveData<List<User>> = MutableLiveData()
+    val userState : MutableLiveData<Resource<User>> =
+        MutableLiveData()
     val dbState : MutableLiveData<Resource<List<ContactedEntity>>> =
+        MutableLiveData()
+    val intersection : MutableLiveData<List<User>> =
         MutableLiveData()
 
     fun startTracing(city: String, country: String){
-//        disposable.add(
-//            repository.getAllContactedIds()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .repeatWhen { completed -> completed.delay(10, TimeUnit.SECONDS) }
-//                .subscribe({
-//                    viewModelScope.launch {
-//                        var res = repository.sendContacted(city, country, it)
-//                        Log.d("TAG", "startTracing: " + res)
-//                    }
-//                }, {
-//                    Log.d("TAG", "List of positive: ERROR")
-//                })
-//        )
-
         viewModelScope.launch(Dispatchers.IO) {
 
             var list  : List<String> = repository.getAllContactedIds()
             var res = repository.sendContacted(city, country, list)
-            Log.d("TAG", "startTracing: " + res[0].id)
+            intersection.postValue(res)
+        }
+    }
 
+    fun selfReveal(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.selfReveal(id)
+        }
+    }
+
+    fun updateUser(id: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            userState.postValue(Resource.Loading)
+            try {
+                val user = repository.login(id)
+                if (user.id!=null){
+                    userState.postValue(
+                        Resource.Success(
+                            user
+                        )
+                    )
+                }
+            } catch (throwable: Throwable) {
+                userState.postValue(
+                    Resource.Error(
+                        "User with this ID does not exist"
+                    )
+                )
+            }
         }
     }
 

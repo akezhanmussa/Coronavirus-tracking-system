@@ -17,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +31,7 @@ import com.example.covidtracerapp.database.ContactedEntity
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
+import kotlinx.android.synthetic.main.activity_login.loaderLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.beacons_list_item.view.*
 import org.altbeacon.beacon.*
@@ -39,7 +42,7 @@ import java.util.*
 const val REQUEST_ENABLE_BT = 1
 const val ALT_BEACON = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
 private const val TAG = "MainActivity"
-const val USER_ID = "USER_ID"
+var USER_ID = "USER_ID"
 var USER_CITY : String = ""
 var USER_COUNTRY : String = ""
 
@@ -61,9 +64,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val currentUser = intent.getSerializableExtra("USER") as? User
 
         currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
-                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city)
+                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city +
+                                                         "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
         USER_CITY = currentUser!!.city
         USER_COUNTRY = currentUser!!.country
+        USER_ID = currentUser!!.id
 
         beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
         beaconsRecyclerView.adapter = adapter
@@ -80,12 +85,34 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             )
         }
 
-        var simulate = true
+        selfReveal.setOnClickListener {
+            viewModel.selfReveal(
+                USER_ID
+            )
+        }
+
+        swipeRefresh.setOnRefreshListener {
+            viewModel.updateUser(USER_ID)
+            swipeRefresh.isRefreshing = false
+        }
+
+        var simulate = false
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()
             timedSimulator.beacons.get(0).toMyBeacon()
         }
+
+        viewModel.userState.observe(this, Observer {
+            when (it) {
+                is Resource.Success -> {
+                    updateUserUi(it.data)
+                }
+
+                is Resource.Error -> showError(it.message)
+            }
+        })
+
         viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
             var users = ""
             for (user in it){
@@ -93,6 +120,22 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             }
             Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
+
+        viewModel.intersection.observe(this, androidx.lifecycle.Observer {
+            var users = ""
+            for (user in it){
+                users = users + user + "\n\n"
+            }
+            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
+        })
+    }
+
+    private fun updateUserUi(currentUser: User){
+        USER_CITY = currentUser.city
+        USER_COUNTRY = currentUser.country
+        currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
+            "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city +
+            "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
     }
 
     private fun getsystemID(): String {
@@ -122,6 +165,10 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val application = this.applicationContext as App
         beaconManager.bind(this)
         application.setMonitoringActivity(this)
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun checkPermission(): Boolean {
