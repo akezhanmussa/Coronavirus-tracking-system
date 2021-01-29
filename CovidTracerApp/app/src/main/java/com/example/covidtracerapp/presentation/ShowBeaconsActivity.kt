@@ -96,6 +96,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             swipeRefresh.isRefreshing = false
         }
 
+        imgMap.setOnClickListener{
+            var intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
+
         var simulate = false
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)

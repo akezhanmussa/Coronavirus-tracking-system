@@ -15,6 +15,7 @@ import com.example.covidtracerapp.R
 import kotlinx.android.synthetic.main.activity_login.loaderLayout
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.loginField
+import kotlinx.android.synthetic.main.activity_main.imgMap
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -51,6 +52,9 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Error -> showError(it.message)
             }
         })
+
+
+
     }
 
     private fun showError(message: String) {

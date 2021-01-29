@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.covidtracerapp">
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:name=".App"
@@ -21,37 +20,41 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ShowBeaconsActivity"
-            android:launchMode="singleInstance"
-            >
-
+        <activity android:name=".presentation.MapActivity">
 
         </activity>
+        <activity
+            android:name=".presentation.ShowBeaconsActivity"
+            android:launchMode="singleInstance"></activity>
         <activity android:name=".presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
-        </activity>
-
-        <!--region SERVICE-->
-        <service android:name=".BackgroundService"/>
-        <!--        <receiver android:name=".PowerButtonBroadcastReceiver"></receiver>-->
-        <!--endregion SERVICE-->
-
-        <receiver android:name=".PowerButtonBroadcastReceiver"
+        </activity> <!-- region SERVICE -->
+        <service android:name=".BackgroundService" /> <!-- <receiver android:name=".PowerButtonBroadcastReceiver"></receiver> -->
+        <!-- endregion SERVICE -->
+        <receiver
+            android:name=".PowerButtonBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.SCREEN_OFF"/>
-                <action android:name="android.intent.action.SCREEN_ON"/>
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
 
-        <service android:name="org.altbeacon.beacon.service.BeaconService"
+        <service
+            android:name="org.altbeacon.beacon.service.BeaconService"
             tools:node="replace">
-            <meta-data android:name="longScanForcingEnabled" android:value="true"/>
+            <meta-data
+                android:name="longScanForcingEnabled"
+                android:value="true" />
         </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_map_api_key" />
     </application>
 
 </manifest>
