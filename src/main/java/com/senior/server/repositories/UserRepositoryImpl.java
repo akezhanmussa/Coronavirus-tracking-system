@@ -2,7 +2,6 @@ package com.senior.server.repositories;
 
 import com.senior.server.domain.Location;
 import com.senior.server.domain.User;
-import com.senior.server.services.DataFilterServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

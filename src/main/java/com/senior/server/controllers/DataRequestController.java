@@ -1,5 +1,6 @@
 package com.senior.server.controllers;
 
+import com.senior.server.domain.Coordinate;
 import com.senior.server.domain.Location;
 import com.senior.server.domain.User;
 import com.senior.server.services.DataFilterService;
@@ -58,4 +59,10 @@ public class DataRequestController {
         return new ResponseEntity(intersectionList, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "hotspots", method = RequestMethod.GET)
+    public ResponseEntity<?> getHotSpots(@RequestParam String city){
+        Location location = new Location("Kazakhstan", city);
+        List<Coordinate> coordinates = dataFilterService.getPlacesByLocation(location);
+        return new ResponseEntity(coordinates, HttpStatus.OK);
+    }
 }

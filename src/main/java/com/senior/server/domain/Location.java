@@ -6,6 +6,7 @@ public class Location {
     String country;
     String city;
 
+
     public Location(String country, String city) {
         this.country = country;
         this.city = city;
@@ -25,6 +26,14 @@ public class Location {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 
     @Override

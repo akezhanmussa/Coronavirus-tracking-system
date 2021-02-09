@@ -1,13 +1,17 @@
 package com.senior.server.services;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.senior.server.domain.Coordinate;
+import com.senior.server.domain.HotSpots;
 import com.senior.server.domain.Location;
 import com.senior.server.domain.User;
 import com.senior.server.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -16,12 +20,21 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class DataFilterServiceImpl implements DataFilterService{
 
+    // TODO: Make it as a configuration
+    private String apiCovidURL = "https://api.covid19live.kz/v1/status";
+    private RestTemplate restTemplate;
     private UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(DataFilterServiceImpl.class);
     private LoadingCache<Location, Set<User>> cacheOnInfectedPersonsByLocation;
 
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
     @PostConstruct
     public void init() {
+
         this.cacheOnInfectedPersonsByLocation = Caffeine.newBuilder()
                 .maximumSize(1)
                 .expireAfterWrite(1, TimeUnit.HOURS)
@@ -32,6 +45,11 @@ public class DataFilterServiceImpl implements DataFilterService{
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -76,5 +94,21 @@ public class DataFilterServiceImpl implements DataFilterService{
         }
         logger.info("INTERSECTION LIST: " + intersectionList);
         return intersectionList;
+    }
+
+    @Override
+    public List<Coordinate> getPlacesByLocation(Location location) {
+        logger.info("Infected places for " + location.toString());
+        List<Coordinate> result = new ArrayList();
+        HotSpots hotSpots = this.restTemplate.getForObject(this.apiCovidURL, HotSpots.class);
+        List<Map<String, Object>> places = hotSpots.getPlaces();
+        for (Map<String, Object> place: places) {
+            // TODO: Add more advanced check
+            if (location.getCity().equals("Astana") && (Integer) place.get("cityId") == 2){
+                Coordinate coordinate = new Coordinate((Double) place.get("longitude"), (Double) place.get("latitude"), (Integer) place.get("radius"));
+                result.add(coordinate);
+            }
+        }
+        return result;
     }
 }
