@@ -5,21 +5,28 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.example.covidtracerapp.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private val mapViewModel: MapViewModel by viewModel()
 
     private var locationPermissionGranted: Boolean = false
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -82,16 +89,35 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        mapViewModel.getLocationsByCity(USER_CITY)
 
+        mapViewModel.locationsState.observe(this, Observer {
+            when(it){
+                is Resource.Success -> {
+                    addCircles(it.data)
+                }
+                is Resource.Error -> showToast(it.message)
+                else -> {}
+            }
+        })
     }
 
 
+    private fun showToast(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
 
-
-
-
-
-
+    private fun addCircles(data: List<com.example.covidtracerapp.presentation.model.Location>) {
+        for(location in data){
+            gMap!!.addCircle(
+                CircleOptions()
+                    .center(LatLng(location.latitude, location.longitude))
+                    .radius(location.radius.toDouble())
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.RED)
+            )
+        }
+    }
 
     companion object {
         private const val TAG = "MapActivity"

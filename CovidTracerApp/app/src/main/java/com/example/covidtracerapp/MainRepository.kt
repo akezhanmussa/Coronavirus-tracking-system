@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.covidtracerapp.api.CovidApi
 import com.example.covidtracerapp.database.ContactedDAO
 import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
 import kotlin.collections.HashMap
@@ -13,7 +14,7 @@ class MainRepository(
     private val contactedDAO: ContactedDAO
 ) : Repository {
 
-    val body: HashMap<String, String> = HashMap()
+    private val body: HashMap<String, String> = HashMap()
 
     override suspend fun login(id: String): User {
         body["id"] = id
@@ -56,6 +57,10 @@ class MainRepository(
 
     override suspend fun getAllContactedIds(): List<String> {
         return contactedDAO.getAllContactedIds()
+    }
+
+    override suspend fun getLocationsByCity(cityName: String): List<Location> {
+        return covidApi.getLocationsByCity(cityName)
     }
 
     override suspend fun insertContacted(contactedEntity: ContactedEntity) {
