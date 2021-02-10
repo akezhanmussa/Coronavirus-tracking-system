@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -108,15 +109,32 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addCircles(data: List<com.example.covidtracerapp.presentation.model.Location>) {
-        for(location in data){
+        gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[0].longitude, data[0].latitude), 25f))
+
+        for (i in 0..15){
+            Log.d(TAG, "addCircles: adding Circle")
+//            gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[i].longitude, data[i].latitude), 25f))
             gMap!!.addCircle(
                 CircleOptions()
-                    .center(LatLng(location.latitude, location.longitude))
-                    .radius(location.radius.toDouble())
+                    .center(LatLng(data[i].longitude, data[i].latitude))
+                    .radius(data[i].radius.toDouble())
                     .strokeColor(Color.RED)
                     .fillColor(Color.RED)
             )
         }
+
+//        for(location in data){
+//
+//            Log.d(TAG, "addCircles: adding Circle")
+//            gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.longitude, location.latitude), 25f))
+//            gMap!!.addCircle(
+//                CircleOptions()
+//                    .center(LatLng(location.longitude, location.latitude))
+//                    .radius(location.radius.toDouble())
+//                    .strokeColor(Color.RED)
+//                    .fillColor(Color.RED)
+//            )
+//        }
     }
 
     companion object {

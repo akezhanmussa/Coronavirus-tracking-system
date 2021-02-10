@@ -29,7 +29,7 @@ val covidModule = module{
             .build()
 
         Retrofit.Builder()
-            .baseUrl("https://radiant-beyond-24923.herokuapp.com/")
+            .baseUrl("https://covid--back.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)

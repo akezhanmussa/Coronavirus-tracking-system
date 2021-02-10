@@ -1,5 +1,6 @@
 package com.example.covidtracerapp.presentation
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,30 +19,32 @@ class MapViewModel(
 
     fun getLocationsByCity(cityName: String){
 
-        val fakeLocations = listOf(
-            Location(51.1666679,71.4333344,18),
-            Location(51.0269852,71.4608765,96)
-        )
+//        val fakeLocations = listOf(
+//            Location(51.1666679,71.4333344,18),
+//            Location(51.0269852,71.4608765,96)
+//        )
+//
+//        locationsState.postValue(Resource.Success(fakeLocations))
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val locations = repository.getLocationsByCity(cityName)
 
-        locationsState.postValue(Resource.Success(fakeLocations))
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val locations = repository.getLocationsByCity(cityName)
-//                if (locations.isNotEmpty()){
-//                    locationsState.postValue(
-//                        Resource.Success(
-//                            locations
-//                        )
-//                    )
-//                }
-//            } catch (throwable: Throwable) {
-//                locationsState.postValue(
-//                    Resource.Error(
-//                        "Error getting locations!"
-//                    )
-//                )
-//            }
-//        }
+                Log.d("TAG", "getLocationsByCity: " + locations)
+                if (locations.isNotEmpty()){
+                    locationsState.postValue(
+                        Resource.Success(
+                            locations
+                        )
+                    )
+                }
+            } catch (throwable: Throwable) {
+                locationsState.postValue(
+                    Resource.Error(
+                        "Error getting locations!"
+                    )
+                )
+            }
+        }
     }
 
 }
