@@ -104,7 +104,7 @@ public class DataFilterServiceImpl implements DataFilterService{
         List<Map<String, Object>> places = hotSpots.getPlaces();
         for (Map<String, Object> place: places) {
             // TODO: Add more advanced check
-            if (location.getCity().equals("Astana") && (Integer) place.get("cityId") == 2){
+            if (location.getCity().equals("Almaty") && (Integer) place.get("cityId") == 1){
                 Coordinate coordinate = new Coordinate((Double) place.get("longitude"), (Double) place.get("latitude"), (Integer) place.get("radius"));
                 result.add(coordinate);
             }
