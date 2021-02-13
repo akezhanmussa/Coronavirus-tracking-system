@@ -60,8 +60,7 @@ public class DataRequestController {
     }
 
     @RequestMapping(path = "hotspots", method = RequestMethod.GET)
-    public ResponseEntity<?> getHotSpots(@RequestParam String city){
-        Location location = new Location("Kazakhstan", city);
+    public ResponseEntity<?> getHotSpots(Location location){
         List<Coordinate> coordinates = dataFilterService.getPlacesByLocation(location);
         return new ResponseEntity(coordinates, HttpStatus.OK);
     }

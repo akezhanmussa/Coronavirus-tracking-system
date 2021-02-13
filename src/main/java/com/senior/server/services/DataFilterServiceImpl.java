@@ -22,6 +22,7 @@ public class DataFilterServiceImpl implements DataFilterService{
 
     // TODO: Make it as a configuration
     private String apiCovidURL = "https://api.covid19live.kz/v1/status";
+    private Map<String, Integer> encodeCityMap;
     private RestTemplate restTemplate;
     private UserRepository userRepository;
     private static final Logger logger = LoggerFactory.getLogger(DataFilterServiceImpl.class);
@@ -34,6 +35,9 @@ public class DataFilterServiceImpl implements DataFilterService{
 
     @PostConstruct
     public void init() {
+        this.encodeCityMap = new HashMap();
+        this.encodeCityMap.put("Astana", 2);
+        this.encodeCityMap.put("Almaty", 1);
 
         this.cacheOnInfectedPersonsByLocation = Caffeine.newBuilder()
                 .maximumSize(1)
@@ -104,8 +108,9 @@ public class DataFilterServiceImpl implements DataFilterService{
         List<Map<String, Object>> places = hotSpots.getPlaces();
         for (Map<String, Object> place: places) {
             // TODO: Add more advanced check
-            if (location.getCity().equals("Almaty") && (Integer) place.get("cityId") == 1){
-                Coordinate coordinate = new Coordinate((Double) place.get("longitude"), (Double) place.get("latitude"), (Integer) place.get("radius"));
+            Integer cityId = this.encodeCityMap.getOrDefault(location.getCity(), 0);
+            if (place.get("cityId") == cityId){
+                Coordinate coordinate = new Coordinate((Double) place.get("latitude"), (Double) place.get("longitude"), (Integer) place.get("radius"));
                 result.add(coordinate);
             }
         }

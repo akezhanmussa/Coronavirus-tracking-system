@@ -14,16 +14,22 @@ public class User {
     private String phone;
     private boolean isPositive;
     private Date datePositive;
-    private String country;
-    private String city;
+    private Location location;
 
-
-    public User(String phone, boolean isPositive, Date datePositive, String country, String city) {
+    public User(String id, String phone, boolean isPositive, Date datePositive, Location location) {
+        this.id = id;
         this.phone = phone;
         this.isPositive = isPositive;
         this.datePositive = datePositive;
-        this.country = country;
-        this.city = city;
+        this.location = location;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getId() {
@@ -58,21 +64,6 @@ public class User {
         this.datePositive = datePositive;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -85,16 +76,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", isPositive=" + isPositive +
-                ", datePositive=" + datePositive +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                '}';
     }
 }
