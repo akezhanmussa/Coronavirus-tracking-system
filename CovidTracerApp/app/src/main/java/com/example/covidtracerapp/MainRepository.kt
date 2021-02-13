@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.covidtracerapp.api.CovidApi
 import com.example.covidtracerapp.database.ContactedDAO
 import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
 import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
@@ -19,19 +20,19 @@ class MainRepository(
     override suspend fun login(id: String): User {
         body["id"] = id
         var response = covidApi.login(body)
-        if (response["errorMessage"]!=null){
-            Log.d("TAG", "login: SSSSSSSSSSSs" + response["errorMessage"])
-            throw Exception(response["errorMessage"] as String)
-        }else{
-            return User(
-                datePositive = response["datePositive"] as String,
-                id = response["id"] as String,
-                phone = response["phone"] as String,
-                positive = response["positive"] as Boolean,
-                city = response["city"] as String,
-                country = response["country"] as String
-            )
-        }
+        return response
+//        if (response["errorMessage"]!=null){
+//            Log.d("TAG", "login: SSSSSSSSSSSs" + response["errorMessage"])
+//            throw Exception(response["errorMessage"] as String)
+//        }else{
+//            return User(
+//                datePositive = response["datePositive"] as String,
+//                id = response["id"] as String,
+//                phone = response["phone"] as String,
+//                positive = response["positive"] as Boolean,
+//                location = response["location"] as Location
+//            )
+//        }
     }
 
     override suspend fun selfReveal(id: String) {
@@ -47,8 +48,7 @@ class MainRepository(
         val body: HashMap<String, String> = HashMap()
         body["city"] = city
         body["country"] = country
-        val positiveByLocation = covidApi.getPositiveByLocation(body)
-        return positiveByLocation
+        return covidApi.getPositiveByLocation(body)
     }
 
     override suspend fun getAllContacted() : List<ContactedEntity> {
@@ -59,8 +59,8 @@ class MainRepository(
         return contactedDAO.getAllContactedIds()
     }
 
-    override suspend fun getLocationsByCity(cityName: String): List<Location> {
-        return covidApi.getLocationsByCity(cityName)
+    override suspend fun getHotspotsByLocation(userLocation: Location): List<HotSpotCoordinate> {
+        return covidApi.getHotspotsByLocation(userLocation.city, userLocation.country)
     }
 
     override suspend fun insertContacted(contactedEntity: ContactedEntity) {

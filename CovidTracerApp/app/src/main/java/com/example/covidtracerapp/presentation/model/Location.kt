@@ -1,7 +1,8 @@
 package com.example.covidtracerapp.presentation.model
 
+import java.io.Serializable
+
 data class Location(
-    var latitude: Double,
-    var longitude: Double,
-    var radius: Int
-)
+    val city: String,
+    val country: String
+) : Serializable

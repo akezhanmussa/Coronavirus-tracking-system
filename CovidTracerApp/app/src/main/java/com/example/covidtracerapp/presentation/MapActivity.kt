@@ -3,25 +3,23 @@ package com.example.covidtracerapp.presentation
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
 import com.example.covidtracerapp.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -75,7 +73,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val location = fusedLocationProviderClient.lastLocation
         location.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val currentLocation = task.result as Location
+                val currentLocation = task.result as android.location.Location
                 val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25f))
                 gMap?.isMyLocationEnabled = true
@@ -90,15 +88,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        mapViewModel.getLocationsByCity(USER_CITY)
+        mapViewModel.getHotspotsByLocation(USER_LOCATION!!)
 
         mapViewModel.locationsState.observe(this, Observer {
-            when(it){
+            when (it) {
                 is Resource.Success -> {
                     addCircles(it.data)
                 }
                 is Resource.Error -> showToast(it.message)
-                else -> {}
+                else -> {
+                }
             }
         })
     }
@@ -108,19 +107,30 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
-    private fun addCircles(data: List<com.example.covidtracerapp.presentation.model.Location>) {
-        gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[0].longitude, data[0].latitude), 25f))
+    private fun addCircles(data: List<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>) {
+        gMap?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    data[0].latitude,
+                    data[0].longitude
+                ), 25f
+            )
+        )
 
-        for (i in 0..15){
+        for (hotspot in data){
             Log.d(TAG, "addCircles: adding Circle")
 //            gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[i].longitude, data[i].latitude), 25f))
             gMap!!.addCircle(
                 CircleOptions()
-                    .center(LatLng(data[i].longitude, data[i].latitude))
-                    .radius(data[i].radius.toDouble())
+                    .center(LatLng(hotspot.latitude, hotspot.longitude))
+                    .radius(hotspot.radius.toDouble())
                     .strokeColor(Color.RED)
                     .fillColor(Color.RED)
             )
+
+            val markerOptions = MarkerOptions()
+            markerOptions.position(LatLng(hotspot.latitude, hotspot.longitude))
+            gMap?.addMarker(markerOptions.title("lat: ${hotspot.latitude}, lon: ${hotspot.longitude}"))
         }
 
 //        for(location in data){

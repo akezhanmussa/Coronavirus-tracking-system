@@ -28,6 +28,7 @@ import com.example.covidtracerapp.R
 import com.example.covidtracerapp.TimedBeaconSimulator
 import com.example.covidtracerapp.Utils.generateUidNamespace
 import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
@@ -45,6 +46,7 @@ private const val TAG = "MainActivity"
 var USER_ID = "USER_ID"
 var USER_CITY : String = ""
 var USER_COUNTRY : String = ""
+var USER_LOCATION : Location? = null
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
@@ -64,11 +66,12 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val currentUser = intent.getSerializableExtra("USER") as? User
 
         currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
-                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city +
+                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.location!!.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.location!!.city +
                                                          "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
-        USER_CITY = currentUser!!.city
-        USER_COUNTRY = currentUser!!.country
+        USER_CITY = currentUser?.location!!.city
+        USER_COUNTRY = currentUser?.location!!.country
         USER_ID = currentUser!!.id
+        USER_LOCATION = currentUser!!.location
 
         beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
         beaconsRecyclerView.adapter = adapter
@@ -136,10 +139,10 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
 
     private fun updateUserUi(currentUser: User){
-        USER_CITY = currentUser.city
-        USER_COUNTRY = currentUser.country
+        USER_CITY = currentUser?.location!!.city
+        USER_COUNTRY = currentUser?.location!!.country
         currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
-            "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city +
+            "<br/>" + "<b>" + "Country: " + "</b>" + USER_COUNTRY + "<br/>" + "<b>" + "City: " + "</b>" + USER_CITY +
             "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
     }
 

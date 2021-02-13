@@ -7,6 +7,5 @@ data class User(
     val id: String,
     val phone: String,
     val positive: Boolean,
-    val city: String,
-    val country: String
+    val location: Location
 ) : Serializable
