@@ -60,8 +60,10 @@ public class DataRequestController {
     }
 
     @RequestMapping(path = "hotspots", method = RequestMethod.GET)
-    public ResponseEntity<?> getHotSpots(Location location){
-        List<Coordinate> coordinates = dataFilterService.getPlacesByLocation(location);
+    public ResponseEntity<?> getHotSpots(
+            Location location,
+            Integer limit){
+        List<Coordinate> coordinates = dataFilterService.getPlacesByLocation(location, limit);
         return new ResponseEntity(coordinates, HttpStatus.OK);
     }
 }

@@ -26,15 +26,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/domain/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/domain/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/services/DataFilterServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -186,7 +190,8 @@
       <workItem from="1605944791734" duration="662000" />
       <workItem from="1607148662532" duration="867000" />
       <workItem from="1612881190092" duration="5830000" />
-      <workItem from="1613207932000" duration="1630000" />
+      <workItem from="1613207932000" duration="1756000" />
+      <workItem from="1613211366559" duration="250000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -251,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612949002405</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Changed User schema, added check for cityId, changed request params for login">
+      <created>1613210300199</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613210300199</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -292,41 +304,42 @@
     <MESSAGE value="added logs for DataRequestController" />
     <MESSAGE value="modified timer for cache" />
     <MESSAGE value="Changed condition in hotspot detection" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed condition in hotspot detection" />
+    <MESSAGE value="Changed User schema, added check for cityId, changed request params for login" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed User schema, added check for cityId, changed request params for login" />
   </component>
   <component name="WindowStateProjectService">
     <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1613208859344">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1613208859344" />
-    <state x="481" y="101" key="CommitChangelistDialog2" timestamp="1612949001422">
+    <state x="481" y="101" key="CommitChangelistDialog2" timestamp="1613210299522">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="481" y="101" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1612949001422" />
-    <state width="1638" height="386" key="GridCell.Tab.0.bottom" timestamp="1613210014602">
+    <state x="481" y="101" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1613210299522" />
+    <state width="1638" height="386" key="GridCell.Tab.0.bottom" timestamp="1613210308937">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1613210014602" />
+    <state width="1638" height="386" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1613210308937" />
     <state width="1638" height="386" key="GridCell.Tab.0.bottom/0.25.1680.976@0.25.1680.976" timestamp="1613061181950" />
-    <state width="1638" height="386" key="GridCell.Tab.0.center" timestamp="1613210014601">
+    <state width="1638" height="386" key="GridCell.Tab.0.center" timestamp="1613210308936">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1613210014601" />
+    <state width="1638" height="386" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1613210308936" />
     <state width="1638" height="386" key="GridCell.Tab.0.center/0.25.1680.976@0.25.1680.976" timestamp="1613061181945" />
-    <state width="1638" height="386" key="GridCell.Tab.0.left" timestamp="1613210014600">
+    <state width="1638" height="386" key="GridCell.Tab.0.left" timestamp="1613210308935">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1613210014600" />
+    <state width="1638" height="386" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1613210308935" />
     <state width="1638" height="386" key="GridCell.Tab.0.left/0.25.1680.976@0.25.1680.976" timestamp="1613061181944" />
-    <state width="1638" height="386" key="GridCell.Tab.0.right" timestamp="1613210014602">
+    <state width="1638" height="386" key="GridCell.Tab.0.right" timestamp="1613210308936">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1613210014602" />
+    <state width="1638" height="386" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1613210308936" />
     <state width="1638" height="386" key="GridCell.Tab.0.right/0.25.1680.976@0.25.1680.976" timestamp="1613061181945" />
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1612949004225">
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1613210302385">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1612949004225" />
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1613210302385" />
     <state x="601" y="245" key="git4idea.branch.GitSmartOperationDialog" timestamp="1605939670806">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>

@@ -10,6 +10,6 @@ public interface DataFilterService {
     List<String> givePositiveInfectedPersonList();
     Set<User> givePositiveInfectedPersonSetByLocation(Location location);
     List<User> findIntersectionWithInfectedList(Location location, List<String> idList);
-    List<Coordinate> getPlacesByLocation(Location location);
+    List<Coordinate> getPlacesByLocation(Location location, Integer limit);
     boolean setPersonToBeInfected(String id);
 }

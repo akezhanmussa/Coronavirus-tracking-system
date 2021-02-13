@@ -6,8 +6,8 @@ com/senior/server/configurations/DatabaseConfiguration.java
  com.senior.server.configurations.DatabaseConfiguration
 com/senior/server/configurations/AdminCredentialsConfiguration.java
  com.senior.server.configurations.AdminCredentialsConfiguration
-com/senior/server/domain/User.java
- com.senior.server.domain.User
+com/senior/server/repositories/UserRepository.java
+ com.senior.server.repositories.UserRepository
 com/senior/server/services/PhoneNumberVerificationServiceImpl.java
  com.senior.server.services.PhoneNumberVerificationServiceImpl
 com/senior/server/configurations/TwilioAccountConfiguration.java
@@ -18,17 +18,17 @@ com/senior/server/domain/HotSpots.java
  com.senior.server.domain.HotSpots
 com/senior/server/domain/Coordinate.java
  com.senior.server.domain.Coordinate
-com/senior/server/repositories/UserRepositoryImpl.java
- com.senior.server.repositories.UserRepositoryImpl
-com/senior/server/services/DataFilterService.java
- com.senior.server.services.DataFilterService
-com/senior/server/controllers/DataRequestController.java
- com.senior.server.controllers.DataRequestController
-com/senior/server/repositories/UserRepository.java
- com.senior.server.repositories.UserRepository
-com/senior/server/controllers/UserVerificationController.java
- com.senior.server.controllers.UserVerificationController
 com/senior/server/domain/Location.java
  com.senior.server.domain.Location
+com/senior/server/repositories/UserRepositoryImpl.java
+ com.senior.server.repositories.UserRepositoryImpl
+com/senior/server/controllers/UserVerificationController.java
+ com.senior.server.controllers.UserVerificationController
+com/senior/server/domain/User.java
+ com.senior.server.domain.User
+com/senior/server/services/DataFilterService.java
+ com.senior.server.services.DataFilterService
 com/senior/server/services/DataFilterServiceImpl.java
  com.senior.server.services.DataFilterServiceImpl
+com/senior/server/controllers/DataRequestController.java
+ com.senior.server.controllers.DataRequestController

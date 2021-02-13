@@ -101,17 +101,19 @@ public class DataFilterServiceImpl implements DataFilterService{
     }
 
     @Override
-    public List<Coordinate> getPlacesByLocation(Location location) {
+    public List<Coordinate> getPlacesByLocation(Location location, Integer limit) {
         logger.info("Infected places for " + location.toString());
         List<Coordinate> result = new ArrayList();
         HotSpots hotSpots = this.restTemplate.getForObject(this.apiCovidURL, HotSpots.class);
         List<Map<String, Object>> places = hotSpots.getPlaces();
         for (Map<String, Object> place: places) {
-            // TODO: Add more advanced check
             Integer cityId = this.encodeCityMap.getOrDefault(location.getCity(), 0);
             if (place.get("cityId") == cityId){
                 Coordinate coordinate = new Coordinate((Double) place.get("latitude"), (Double) place.get("longitude"), (Integer) place.get("radius"));
                 result.add(coordinate);
+            }
+            if (result.size() == limit) {
+                break;
             }
         }
         return result;
