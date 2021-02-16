@@ -77,14 +77,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25f))
                 gMap?.isMyLocationEnabled = true
-
-                val circle: Circle = gMap!!.addCircle(
-                    CircleOptions()
-                        .center(latLng)
-                        .radius(1000.0)
-                        .strokeColor(Color.RED)
-                        .fillColor(Color.RED)
-                )
             }
         }
 

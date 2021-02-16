@@ -1,7 +1,9 @@
 package com.example.covidtracerapp.presentation
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,9 +17,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,11 +30,18 @@ import com.example.covidtracerapp.R
 import com.example.covidtracerapp.TimedBeaconSimulator
 import com.example.covidtracerapp.Utils.generateUidNamespace
 import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.geofencing.GeofenceBroadcastReceiver
+import com.example.covidtracerapp.geofencing.createGeofencingNotificationChannel
 import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
-import kotlinx.android.synthetic.main.activity_login.loaderLayout
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.beacons_list_item.view.*
 import org.altbeacon.beacon.*
@@ -50,6 +59,7 @@ var USER_LOCATION : Location? = null
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
+    private val mapViewModel: MapViewModel by viewModel()
     private val viewModel : ShowBeaconsViewModel by viewModel()
     private val timedSimulator = TimedBeaconSimulator()
 
@@ -58,6 +68,24 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     private var adapter: BeaconsAdapter =
         BeaconsAdapter(listOf())
     private var contactedSet: MutableSet<String> = mutableSetOf()
+
+    //ActivityResultAPI
+    private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        if (it){
+            Log.i(TAG, "Permission is Granted.")
+        }
+        else
+            Log.i(TAG, "Permission is not Granted.")
+    }
+
+    //Geofencing
+    private var hotspots = listOf<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>()
+    private lateinit var geofencingClient: GeofencingClient
+    private val geofencePendingIntent: PendingIntent by lazy {
+        val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+        intent.action = ACTION_GEOFENCE_EVENT
+        PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +108,23 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         checkPermission()
         val uid = currentUser!!.id
         startserviceBroadcast(uid)
+
+        //Geofencing TODO: Geofences should be added in the background, not in onCreate
+        createGeofencingNotificationChannel(this)
+        geofencingClient = LocationServices.getGeofencingClient(this)
+        mapViewModel.getHotspotsByLocation(USER_LOCATION!!)
+        mapViewModel.locationsState.observe(this, Observer {
+            when (it) {
+                is Resource.Success -> {
+                    hotspots = it.data
+                    addGeofences(hotspots)
+                }
+                is Resource.Error -> Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                else -> {
+                }
+            }
+        })
+        if (!checkBackgroundLocationPermission()) requestBackgroundLocationPermission()
 
         sendData.setOnClickListener {
             viewModel.startTracing(
@@ -138,6 +183,66 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         })
     }
 
+    private fun checkLocationPermissions(): Boolean {
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestLocationPermissions() {
+        activityResultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    private fun checkBackgroundLocationPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return true
+        return ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    @SuppressLint("InlinedApi")
+    private fun requestBackgroundLocationPermission(){
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                R.string.permission_denied_explanation,
+                Snackbar.LENGTH_INDEFINITE
+        )
+                .setAction(R.string.settings) {
+                    // Displays App settings screen.
+//                startActivity(Intent().apply {
+//                    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+//                    data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+//                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                })
+                    activityResultLauncher.launch(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                }.show()
+    }
+    @SuppressLint("MissingPermission")
+    private fun addGeofences(listOfHotspots : List<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>){
+        // TODO: Check for both fine and background ?
+        if (!checkLocationPermissions()) return
+        val listOfGeofences = mutableListOf<Geofence>()
+
+        for (hotspot in listOfHotspots){
+            Log.d(TAG, "addGeofences: adding Geofence" + hotspot.latitude + " - " + hotspot.longitude)
+            val geofence = Geofence.Builder()
+                    .setRequestId(LatLng(hotspot.latitude, hotspot.longitude).toString())
+                    .setCircularRegion(hotspot.latitude, hotspot.longitude, hotspot.radius.toFloat())
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                    .build()
+            listOfGeofences.add(geofence)
+        }
+
+        val geofenceRequest = GeofencingRequest.Builder()
+                .addGeofences(listOfGeofences)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .build()
+
+        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent).run {
+            addOnSuccessListener {
+                Log.i(TAG, "addGeofences: Success")
+            }
+            addOnFailureListener {
+                Log.i(TAG, "addGeofences: Failure")
+            }
+        }
+    }
     private fun updateUserUi(currentUser: User){
         USER_CITY = currentUser?.location!!.city
         USER_COUNTRY = currentUser?.location!!.country
@@ -180,47 +285,21 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
 
     private fun checkPermission(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED
-            ) {
-                if (checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED
-                ) {
-                    if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                        val builder =
-                            AlertDialog.Builder(this)
-                        builder.setTitle("This app needs background location access")
-                        builder.setMessage("Please grant location access so this app can detect beacons in the background.")
-                        builder.setPositiveButton(android.R.string.ok, null)
-                        builder.setOnDismissListener {
-                            requestPermissions(
-                                arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
-                                PERMISSION_REQUEST_BACKGROUND_LOCATION
-                            )
-                        }
-                        builder.show()
-                    } else {
-                    }
-                }
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                requestLocationPermissions()
             } else {
-                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    requestPermissions(
-                        arrayOf(
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                        ),
-                        PERMISSION_REQUEST_FINE_LOCATION
-                    )
-                } else {
-                    val builder =
-                        AlertDialog.Builder(this)
-                    builder.setTitle("Functionality limited")
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.")
-                    builder.setPositiveButton(android.R.string.ok, null)
-                    builder.setOnDismissListener { }
-                    builder.show()
+                val builder =
+                    AlertDialog.Builder(this)
+                builder.setTitle("Functionality limited")
+                builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.")
+                builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+                    requestLocationPermissions()
                 }
+                builder.setOnDismissListener { }
+                builder.show()
             }
         }
         return false
@@ -299,6 +378,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         private const val PERMISSION_REQUEST_FINE_LOCATION = 1
         private const val PERMISSION_REQUEST_BACKGROUND_LOCATION = 2
         const val sysIdKey = "sharedPrefKey"
+        internal const val ACTION_GEOFENCE_EVENT = "ACTION_GEOFENCE_EVENT"
     }
 }
 

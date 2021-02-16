@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".presentation.ShowBeaconsActivity"
-            android:launchMode="singleInstance"></activity>
+            android:launchMode="singleInstance" />
         <activity android:name=".presentation.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name=".geofencing.GeofenceBroadcastReceiver"/>
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"
             tools:node="replace">
