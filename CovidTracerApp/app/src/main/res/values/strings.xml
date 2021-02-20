@@ -12,6 +12,8 @@
 
     <string name="permission_denied_explanation">Grant background location permission by selecting "Allow all the time"</string>
     <string name="settings">Settings</string>
+    <string name="msg_subscribed">Subscribed to topic</string>
+    <string name="msg_subscribe_failed">Topic subscription failed</string>
     <!--Geofencing-END-->
 
 

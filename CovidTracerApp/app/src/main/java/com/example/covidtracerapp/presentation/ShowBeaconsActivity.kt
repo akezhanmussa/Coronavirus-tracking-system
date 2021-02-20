@@ -28,6 +28,7 @@ import com.example.covidtracerapp.App
 import com.example.covidtracerapp.BackgroundService
 import com.example.covidtracerapp.R
 import com.example.covidtracerapp.TimedBeaconSimulator
+import com.example.covidtracerapp.Utils
 import com.example.covidtracerapp.Utils.generateUidNamespace
 import com.example.covidtracerapp.database.ContactedEntity
 import com.example.covidtracerapp.geofencing.GeofenceBroadcastReceiver
@@ -42,6 +43,10 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.beacons_list_item.view.*
 import org.altbeacon.beacon.*
@@ -153,7 +158,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()
-            timedSimulator.beacons.get(0).toMyBeacon()
+            timedSimulator.beacons[0].toMyBeacon()
         }
 
         viewModel.userState.observe(this, Observer {
@@ -181,6 +186,18 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             }
             Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
+
+
+
+        Firebase.messaging.subscribeToTopic(Utils.ALL_DEVICES_TOPIC)
+            .addOnCompleteListener { task ->
+                var msg = getString(R.string.msg_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.msg_subscribe_failed)
+                }
+                Log.d(TAG, msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun checkLocationPermissions(): Boolean {

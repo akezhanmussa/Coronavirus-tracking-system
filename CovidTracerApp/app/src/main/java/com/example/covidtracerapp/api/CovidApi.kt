@@ -1,7 +1,6 @@
 package com.example.covidtracerapp.api
 
 import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
-import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
 import retrofit2.http.Body
@@ -12,7 +11,6 @@ import retrofit2.http.Query
 
 
 interface CovidApi {
-
 
     @POST("api/database-check")
     suspend fun login(@Body id: Map<String, String>): User
