@@ -1,5 +1,8 @@
 package com.senior.server.controllers;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
@@ -14,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +32,22 @@ public class DataRequestController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserVerificationController.class);
     private DataFilterService dataFilterService;
+
+    @PostConstruct
+    public void initialize() {
+        String filePath = "src/main/resources/covidtracerapp-9dad0-firebase-adminsdk-uv88d-9ce746e808.json";
+
+        try {
+            FileInputStream serviceAccount = new FileInputStream(filePath);
+            FirebaseOptions firebaseOptions = new FirebaseOptions.Builder().
+                    setCredentials(GoogleCredentials.fromStream(serviceAccount)).build();
+            if(FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(firebaseOptions);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Autowired
     public void setDataFilterService(DataFilterService dataFilterService) {
@@ -57,8 +79,7 @@ public class DataRequestController {
         String topic = "all_devices";
         // See documentation on defining a message payload.
         Message message = Message.builder()
-                .putData("score", "850")
-                .putData("time", "2:45")
+                .putData("id", id)
                 .setTopic(topic)
                 .build();
 

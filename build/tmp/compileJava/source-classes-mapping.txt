@@ -28,7 +28,7 @@ com/senior/server/domain/User.java
  com.senior.server.domain.User
 com/senior/server/services/PhoneNumberVerificationService.java
  com.senior.server.services.PhoneNumberVerificationService
-com/senior/server/controllers/DataRequestController.java
- com.senior.server.controllers.DataRequestController
 com/senior/server/ServerApplication.java
  com.senior.server.ServerApplication
+com/senior/server/controllers/DataRequestController.java
+ com.senior.server.controllers.DataRequestController

@@ -26,27 +26,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e6859776-d8e8-4209-aef6-1da1640033aa" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileContent/fileContent.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/classAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/jarAnalysis.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.6.1/javaCompile/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/source-classes-mapping.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/ServerApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/senior/server/ServerApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/ServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/ServerApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/DataRequestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/UserVerificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/senior/server/controllers/UserVerificationController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +186,7 @@
       <workItem from="1613207932000" duration="1756000" />
       <workItem from="1613211366559" duration="1217000" />
       <workItem from="1613814482951" duration="1453000" />
-      <workItem from="1613816112853" duration="2398000" />
+      <workItem from="1613816112853" duration="3756000" />
     </task>
     <task id="LOCAL-00001" summary="BACK&#10;* added properties to gitignore">
       <created>1602011956508</created>
@@ -282,7 +265,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613212059012</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added Firebase broadcast in set-to-be-infected endpoint">
+      <created>1613819264544</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1613819264545</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,42 +315,47 @@
     <MESSAGE value="Changed condition in hotspot detection" />
     <MESSAGE value="Changed User schema, added check for cityId, changed request params for login" />
     <MESSAGE value="Added limit query param for hotspot places" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added limit query param for hotspot places" />
+    <MESSAGE value="Added Firebase broadcast in set-to-be-infected endpoint" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Firebase broadcast in set-to-be-infected endpoint" />
   </component>
   <component name="WindowStateProjectService">
     <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser" timestamp="1613208859344">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
     <state x="653" y="216" key="#com.intellij.ide.util.MemberChooser/0.0.1680.1050@0.0.1680.1050" timestamp="1613208859344" />
-    <state x="481" y="101" key="CommitChangelistDialog2" timestamp="1613212057149">
-      <screen x="0" y="25" width="1680" height="976" />
+    <state x="481" y="101" key="CommitChangelistDialog2" timestamp="1613819263401">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="481" y="101" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1613210299522" />
+    <state x="481" y="101" key="CommitChangelistDialog2/0.0.1680.1050@0.0.1680.1050" timestamp="1613819263401" />
     <state x="481" y="101" key="CommitChangelistDialog2/0.25.1680.976@0.25.1680.976" timestamp="1613212057149" />
-    <state width="1638" height="386" key="GridCell.Tab.0.bottom" timestamp="1613213245862">
+    <state x="268" y="95" key="DiffContextDialog" timestamp="1613819171232">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1613213245862" />
+    <state x="268" y="95" key="DiffContextDialog/0.0.1680.1050@0.0.1680.1050" timestamp="1613819171232" />
+    <state width="1638" height="263" key="GridCell.Tab.0.bottom" timestamp="1613820444889">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="263" key="GridCell.Tab.0.bottom/0.0.1680.1050@0.0.1680.1050" timestamp="1613820444889" />
     <state width="1638" height="386" key="GridCell.Tab.0.bottom/0.25.1680.976@0.25.1680.976" timestamp="1613061181950" />
-    <state width="1638" height="386" key="GridCell.Tab.0.center" timestamp="1613213245861">
+    <state width="1638" height="263" key="GridCell.Tab.0.center" timestamp="1613820444888">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1613213245861" />
+    <state width="1638" height="263" key="GridCell.Tab.0.center/0.0.1680.1050@0.0.1680.1050" timestamp="1613820444888" />
     <state width="1638" height="386" key="GridCell.Tab.0.center/0.25.1680.976@0.25.1680.976" timestamp="1613061181945" />
-    <state width="1638" height="386" key="GridCell.Tab.0.left" timestamp="1613213245861">
+    <state width="1638" height="263" key="GridCell.Tab.0.left" timestamp="1613820444887">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1613213245861" />
+    <state width="1638" height="263" key="GridCell.Tab.0.left/0.0.1680.1050@0.0.1680.1050" timestamp="1613820444887" />
     <state width="1638" height="386" key="GridCell.Tab.0.left/0.25.1680.976@0.25.1680.976" timestamp="1613061181944" />
-    <state width="1638" height="386" key="GridCell.Tab.0.right" timestamp="1613213245862">
+    <state width="1638" height="263" key="GridCell.Tab.0.right" timestamp="1613820444889">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="386" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1613213245862" />
+    <state width="1638" height="263" key="GridCell.Tab.0.right/0.0.1680.1050@0.0.1680.1050" timestamp="1613820444889" />
     <state width="1638" height="386" key="GridCell.Tab.0.right/0.25.1680.976@0.25.1680.976" timestamp="1613061181945" />
-    <state x="440" y="259" key="Vcs.Push.Dialog.v2" timestamp="1613212366678">
-      <screen x="0" y="25" width="1680" height="976" />
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2" timestamp="1613819266357">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1613210302385" />
+    <state x="440" y="252" key="Vcs.Push.Dialog.v2/0.0.1680.1050@0.0.1680.1050" timestamp="1613819266357" />
     <state x="440" y="259" key="Vcs.Push.Dialog.v2/0.25.1680.976@0.25.1680.976" timestamp="1613212366678" />
     <state x="601" y="245" key="git4idea.branch.GitSmartOperationDialog" timestamp="1605939670806">
       <screen x="0" y="0" width="1680" height="1050" />
