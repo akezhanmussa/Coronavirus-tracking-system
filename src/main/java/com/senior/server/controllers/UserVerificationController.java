@@ -45,21 +45,4 @@ public class UserVerificationController {
         logger.info("User was found");
         return new ResponseEntity<User>(candidateUser, HttpStatus.OK);
     }
-
-//    @RequestMapping(path = "start", method = RequestMethod.POST)
-//    public ResponseEntity<?> start(@RequestBody Map<String, String> requestBody) {
-//        String phoneNumber = requestBody.getOrDefault("phoneNumber", "+77015137789");
-//        String via = requestBody.getOrDefault("via", Verification.Channel.SMS.toString());
-//        Verification verification = phoneNumberVerificationService.start(phoneNumber, via);
-//        Map<String, String> rawRes = new HashMap();
-//        HttpStatus status = HttpStatus.BAD_REQUEST;
-//        if (verification.getValid()){
-//            rawRes.put("ans", "success");
-//            status = HttpStatus.OK;
-//        }else{
-//            rawRes.put("ans", "failure");
-//        }
-//        return new ResponseEntity<Map<String, String>>(rawRes, status);
-//    }
-
 }
