@@ -20,9 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.MapActivity">
-
-        </activity>
+        <activity android:name=".presentation.FirebaseNotificationActivity"></activity>
+        <activity android:name=".presentation.MapActivity"></activity>
         <activity
             android:name=".presentation.ShowBeaconsActivity"
             android:launchMode="singleInstance" />
@@ -43,7 +42,8 @@
                 <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".geofencing.GeofenceBroadcastReceiver"/>
+        <receiver android:name=".geofencing.GeofenceBroadcastReceiver" />
+
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"
             tools:node="replace">
@@ -51,7 +51,6 @@
                 android:name="longScanForcingEnabled"
                 android:value="true" />
         </service>
-
         <service
             android:name=".CovidFirebaseMessagingService"
             android:exported="false">
@@ -64,7 +63,5 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
     </application>
-
-
 
 </manifest>

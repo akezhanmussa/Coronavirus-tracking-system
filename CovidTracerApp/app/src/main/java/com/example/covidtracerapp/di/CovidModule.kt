@@ -8,6 +8,7 @@ import com.example.covidtracerapp.Repository
 import com.example.covidtracerapp.presentation.ShowBeaconsViewModel
 import com.example.covidtracerapp.database.AppDatabase
 import com.example.covidtracerapp.database.ContactedDAO
+import com.example.covidtracerapp.presentation.FirebaseNotificationViewModel
 import com.example.covidtracerapp.presentation.MapViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -62,6 +63,12 @@ val covidModule = module{
 
     viewModel<ShowBeaconsViewModel>{
         ShowBeaconsViewModel(
+            repository = get()
+        )
+    }
+
+    viewModel{
+        FirebaseNotificationViewModel(
             repository = get()
         )
     }

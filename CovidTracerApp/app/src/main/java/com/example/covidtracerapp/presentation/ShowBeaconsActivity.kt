@@ -3,10 +3,15 @@ package com.example.covidtracerapp.presentation
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
@@ -19,8 +24,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -90,6 +98,54 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    private val messageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            var id = intent.extras?.getString("id")
+            Log.d(TAG, "onReceive: RECEIVED $id")
+            createNotification(id)
+        }
+    }
+
+    private fun createNotification(id: String?) {
+
+        createNotificationChannel()
+
+        val intent = Intent(this, FirebaseNotificationActivity::class.java)
+        intent.putExtra("id", id)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        var builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_baseline_coronavirus_24)
+            .setContentTitle("Covid Notification")
+            .setContentText("Someone with id $id got infected")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(NOTIFICATION_ID, builder.build())
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "channel_11"
+            val descriptionText = "our channel"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, IntentFilter("FirebaseNotification"))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -203,10 +259,15 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     private fun checkLocationPermissions(): Boolean {
         return ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
+
     private fun requestLocationPermissions() {
         activityResultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
+    override fun onStop() {
+        super.onStop()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReceiver)
+    }
     private fun checkBackgroundLocationPermission(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return true
         return ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -396,6 +457,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         private const val PERMISSION_REQUEST_BACKGROUND_LOCATION = 2
         const val sysIdKey = "sharedPrefKey"
         internal const val ACTION_GEOFENCE_EVENT = "ACTION_GEOFENCE_EVENT"
+        const val NOTIFICATION_ID = 999
     }
 }
 
