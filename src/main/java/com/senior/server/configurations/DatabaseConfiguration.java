@@ -1,7 +1,5 @@
 package com.senior.server.configurations;
 
-
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -26,7 +24,11 @@ public class DatabaseConfiguration {
     }
 
     private String buildDatabaseURI(){
-        return String.format("mongodb+srv://%s:%s@seniorprojectdb.iqfpg.mongodb.net/%s?retryWrites=true&w=majority",adminCredentialsConfiguration.getAdminName(), adminCredentialsConfiguration.getAdminPassword(), adminCredentialsConfiguration.getDatabaseName());
+        return String.format(
+                "mongodb+srv://%s:%s@seniorprojectdb.iqfpg.mongodb.net/%s?retryWrites=true&w=majority",
+                adminCredentialsConfiguration.getAdminName(),
+                adminCredentialsConfiguration.getAdminPassword(),
+                adminCredentialsConfiguration.getDatabaseName()
+        );
     }
-
 }

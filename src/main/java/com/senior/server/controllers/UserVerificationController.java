@@ -3,7 +3,6 @@ package com.senior.server.controllers;
 
 import com.senior.server.domain.User;
 import com.senior.server.repositories.UserRepository;
-import com.senior.server.services.PhoneNumberVerificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,10 @@ import java.util.Map;
 public class UserVerificationController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserVerificationController.class);
-    private PhoneNumberVerificationService phoneNumberVerificationService;
     private UserRepository userRepository;
 
     @Autowired
-    public UserVerificationController(PhoneNumberVerificationService phoneNumberVerificationService, UserRepository userRepository) {
-        this.phoneNumberVerificationService = phoneNumberVerificationService;
+    public UserVerificationController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
     

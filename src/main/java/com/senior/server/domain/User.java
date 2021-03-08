@@ -15,13 +15,23 @@ public class User {
     private boolean isPositive;
     private Date datePositive;
     private Location location;
+    private String password;
 
-    public User(String id, String phone, boolean isPositive, Date datePositive, Location location) {
+    public User(String id, String phone, boolean isPositive, Date datePositive, Location location, String password) {
         this.id = id;
         this.phone = phone;
         this.isPositive = isPositive;
         this.datePositive = datePositive;
         this.location = location;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Location getLocation() {
