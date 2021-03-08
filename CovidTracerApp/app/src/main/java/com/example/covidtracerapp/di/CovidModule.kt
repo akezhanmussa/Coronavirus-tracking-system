@@ -1,7 +1,16 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.di
 
+import androidx.room.Room
+import com.example.covidtracerapp.api.CovidApi
+import com.example.covidtracerapp.presentation.LoginViewModel
+import com.example.covidtracerapp.MainRepository
+import com.example.covidtracerapp.Repository
+import com.example.covidtracerapp.presentation.ShowBeaconsViewModel
+import com.example.covidtracerapp.database.AppDatabase
+import com.example.covidtracerapp.database.ContactedDAO
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -27,12 +36,14 @@ val covidModule = module{
     }
 
     single{
-        get<Retrofit>().create<CovidApi>(CovidApi::class.java)
+        get<Retrofit>().create<CovidApi>(
+            CovidApi::class.java)
     }
 
     single<Repository> {
         MainRepository(
-            covidApi = get()
+            covidApi = get(),
+            contactedDAO = get()
         )
     }
 
@@ -48,6 +59,14 @@ val covidModule = module{
         )
     }
 
-
-
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "covid-database")
+            .build()
+    }
+    fun getContactedDao(database: AppDatabase): ContactedDAO {
+        return database.contactedDao()
+    }
+    single {
+        getContactedDao(get())
+    }
 }

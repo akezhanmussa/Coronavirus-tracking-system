@@ -1,4 +1,4 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.presentation
 
 import android.app.Activity
 import android.content.Context
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.covidtracerapp.R
 import kotlinx.android.synthetic.main.activity_login.loaderLayout
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.loginField

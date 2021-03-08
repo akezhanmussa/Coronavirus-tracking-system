@@ -17,23 +17,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="1">
         <TextView
             android:id="@+id/beacon_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.5"
             android:text="ID"
+            android:gravity="center"
             android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            android:fontFamily="@font/coda"
+            android:layout_margin="8dp"
+            />
 
         <TextView
             android:id="@+id/beacon_distance"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
             android:text="DISTANCE"
             android:textColor="@android:color/black"
-            android:textSize="20sp"/>
+            android:fontFamily="@font/coda"
+            android:layout_margin="8dp"
+        />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -11,12 +11,15 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.covidtracerapp.di.covidModule
+import com.example.covidtracerapp.presentation.ShowBeaconsActivity
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.BeaconParser
 import org.altbeacon.beacon.Region
 import org.altbeacon.beacon.powersave.BackgroundPowerSaver
 import org.altbeacon.beacon.startup.BootstrapNotifier
 import org.altbeacon.beacon.startup.RegionBootstrap
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application(), BootstrapNotifier {
@@ -31,6 +34,7 @@ class App : Application(), BootstrapNotifier {
         super.onCreate()
 
         startKoin {
+            androidContext(this@App)
             modules(covidModule)
         }
 

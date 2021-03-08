@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CovidTracerApp</string>
+    <string name="login">LOGIN</string>
+    <string name="sending_local_list">Check My Person List</string>
 </resources>

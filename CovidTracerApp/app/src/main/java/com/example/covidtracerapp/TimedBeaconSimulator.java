@@ -52,9 +52,9 @@ public class TimedBeaconSimulator implements org.altbeacon.beacon.simulator.Beac
      */
     public void createBasicSimulatedBeacons(){
         if (USE_SIMULATED_BEACONS) {
-            Beacon beacon1 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+            Beacon beacon1 = new AltBeacon.Builder().setId1("010101000002")
                     .setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
-            Beacon beacon2 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997B")
+            Beacon beacon2 = new AltBeacon.Builder().setId1("010101000004")
                     .setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
             Beacon beacon3 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997C")
                     .setId2("1").setId3("3").setRssi(-55).setTxPower(-55).build();
@@ -79,9 +79,9 @@ public class TimedBeaconSimulator implements org.altbeacon.beacon.simulator.Beac
     public void createTimedSimulatedBeacons(){
         if (USE_SIMULATED_BEACONS){
             beacons = new ArrayList<Beacon>();
-            Beacon beacon1 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+            Beacon beacon1 = new AltBeacon.Builder().setId1("010101000002")
                     .setId2("1").setId3("1").setRssi(-55).setTxPower(-55).build();
-            Beacon beacon2 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
+            Beacon beacon2 = new AltBeacon.Builder().setId1("010101000004")
                     .setId2("1").setId3("2").setRssi(-55).setTxPower(-55).build();
             Beacon beacon3 = new AltBeacon.Builder().setId1("DF7E1C79-43E9-44FF-886F-1D1F7DA6997A")
                     .setId2("1").setId3("3").setRssi(-55).setTxPower(-55).build();

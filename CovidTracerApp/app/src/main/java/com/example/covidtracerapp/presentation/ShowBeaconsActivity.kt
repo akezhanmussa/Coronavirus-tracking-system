@@ -1,4 +1,4 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.presentation
 
 import android.Manifest
 import android.app.AlertDialog
@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.RemoteException
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,18 +20,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covidtracerapp.App
+import com.example.covidtracerapp.BackgroundService
+import com.example.covidtracerapp.R
+import com.example.covidtracerapp.TimedBeaconSimulator
 import com.example.covidtracerapp.Utils.generateUidNamespace
-import com.example.covidtracerapp.database.ContactedDAO
-import com.example.covidtracerapp.database.ContactedDatabase
 import com.example.covidtracerapp.database.ContactedEntity
-import kotlinx.android.synthetic.main.activity_main.beaconsRecyclerView
-import kotlinx.android.synthetic.main.activity_main.currentUserInfoTv
-import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_distance
-import kotlinx.android.synthetic.main.beacons_list_item.view.beacon_id
-import org.altbeacon.beacon.BeaconConsumer
-import org.altbeacon.beacon.BeaconManager
-import org.altbeacon.beacon.RangeNotifier
-import org.altbeacon.beacon.Region
+import com.example.covidtracerapp.presentation.model.MyBeacon
+import com.example.covidtracerapp.presentation.model.User
+import com.example.covidtracerapp.presentation.model.toMyBeacon
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.beacons_list_item.view.*
+import org.altbeacon.beacon.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -39,44 +40,59 @@ const val REQUEST_ENABLE_BT = 1
 const val ALT_BEACON = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
 private const val TAG = "MainActivity"
 const val USER_ID = "USER_ID"
+var USER_CITY : String = ""
+var USER_COUNTRY : String = ""
 
 class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private val viewModel : ShowBeaconsViewModel by viewModel()
+    private val timedSimulator = TimedBeaconSimulator()
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
-    private var adapter: BeaconsAdapter = BeaconsAdapter(listOf())
-
-    private lateinit var contactedDatabase: ContactedDatabase
-    private lateinit var contactedDao: ContactedDAO
-    private val timedSimulator = TimedBeaconSimulator()
+    private var adapter: BeaconsAdapter =
+        BeaconsAdapter(listOf())
+    private var contactedSet: MutableSet<String> = mutableSetOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        contactedDatabase = ContactedDatabase.getsInstance(this)
-        contactedDao = contactedDatabase.contactedDAO()
+
         val currentUser = intent.getSerializableExtra("USER") as? User
-        currentUserInfoTv.text =currentUser.toString()
+
+        currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
+                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.city)
+        USER_CITY = currentUser!!.city
+        USER_COUNTRY = currentUser!!.country
 
         beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
         beaconsRecyclerView.adapter = adapter
 
         verifyBluetooth()
         checkPermission()
-        val uid = getsystemID()
+        val uid = currentUser!!.id
         startserviceBroadcast(uid)
-        viewModel.startTracing()
 
+        sendData.setOnClickListener {
+            viewModel.startTracing(
+                USER_CITY,
+                USER_COUNTRY
+            )
+        }
+
+        var simulate = true
+        if(simulate) {
+            BeaconManager.setBeaconSimulator(timedSimulator)
+            timedSimulator.createBasicSimulatedBeacons()
+            timedSimulator.beacons.get(0).toMyBeacon()
+        }
         viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
-            Toast.makeText(applicationContext, "" + it, Toast.LENGTH_SHORT).show()
+            var users = ""
+            for (user in it){
+                users = users + user + "\n\n"
+            }
+            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
-
-        //simulator code
-        BeaconManager.setBeaconSimulator(timedSimulator)
-        timedSimulator.createBasicSimulatedBeacons()
-        timedSimulator.beacons.get(0).toMyBeacon()
     }
 
     private fun getsystemID(): String {
@@ -94,7 +110,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private fun startserviceBroadcast(uid: String) {
         val serviceIntent = Intent(this, BackgroundService::class.java)
-        serviceIntent.putExtra(sysIdKey, uid)
+        val zeros = "00000000"
+        serviceIntent.putExtra(sysIdKey, uid + zeros)
 
 //        application.enableMonitoring();
         ContextCompat.startForegroundService(this, serviceIntent)
@@ -191,16 +208,17 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                 remoteBeaconsIds.clear()
                 Log.d(TAG, "onBeaconServiceConnect: TOTAL: ${beacons.size}")
                 for (beacon in beacons){
-                    val myb = beacon.toMyBeacon()
+                    var myb = beacon.toMyBeacon()
                     if (remoteBeaconsIds.contains(myb)){
                         remoteBeaconsIds.remove(myb)
                     }
+                    if(myb.distance < 3 && !contactedSet.contains(myb.id1.toString())) {
+                        contactedSet.add(myb.id1.toString())
+                        viewModel.insertContacted(ContactedEntity(myb.id1.toString().substring(2,14), Calendar.getInstance().time))
+                        Log.d(TAG, "Inserted: " + myb.id1.toString().substring(2,14))
+                    }
                     remoteBeaconsIds.add(myb)
-                    contactedDao.insertContacted(ContactedEntity(Calendar.getInstance().time))
-                    Log.d(TAG, "Inserted: " + myb.id1.toString())
                 }
-
-
 
                 adapter.updateList(remoteBeaconsIds.toMutableList())
             }else{
@@ -251,15 +269,18 @@ class BeaconsAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeaconsViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.beacons_list_item,
+        val itemView = LayoutInflater.from(parent.context).inflate(
+            R.layout.beacons_list_item,
             parent, false)
-        return BeaconsViewHolder(itemView)
+        return BeaconsViewHolder(
+            itemView
+        )
     }
 
     override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
         val currentItem = beacons[position]
-        holder.beaconId.text = currentItem.id1.toString().substring(2)
-        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " cm"
+        holder.beaconId.text = currentItem.id1.toString().substring(2, 14)
+        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " m"
     }
 
     override fun getItemCount(): Int {

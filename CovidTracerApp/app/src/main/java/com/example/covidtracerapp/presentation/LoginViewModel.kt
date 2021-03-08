@@ -1,10 +1,10 @@
-package com.example.covidtracerapp
+package com.example.covidtracerapp.presentation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import com.example.covidtracerapp.Repository
+import com.example.covidtracerapp.presentation.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
