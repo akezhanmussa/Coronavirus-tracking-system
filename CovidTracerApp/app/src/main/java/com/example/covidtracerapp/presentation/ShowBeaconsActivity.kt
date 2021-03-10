@@ -24,6 +24,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -45,10 +46,12 @@ import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
@@ -75,6 +78,14 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     private val mapViewModel: MapViewModel by viewModel()
     private val viewModel : ShowBeaconsViewModel by viewModel()
     private val timedSimulator = TimedBeaconSimulator()
+
+    private var locationPermissionGranted: Boolean = false
+    var fusedLocationProviderClient: FusedLocationProviderClient? = null
+
+    private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
+    private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1
+
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
@@ -413,6 +424,39 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         Log.i("testing_log_adapater", log!!)
     }
 
+    fun getCurrentLocation(): LatLng?{
+
+        val permissions = arrayOf<String>(FINE_LOCATION, COARSE_LOCATION)
+        if (locationPermissionGranted){
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    permissions,
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }
+
+        }
+
+        val location = fusedLocationProviderClient?.lastLocation
+        var latLng: LatLng? = null
+        location?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val currentLocation = task.result as android.location.Location
+                LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
+            }
+        }
+
+        return latLng
+    }
+
     override fun onBeaconServiceConnect() {
         val rangeNotifier = RangeNotifier { beacons, region ->
             Log.d(TAG, "onBeaconServiceConnect: RANGING")
@@ -426,7 +470,12 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     }
                     if(myb.distance < 3 && !contactedSet.contains(myb.id1.toString())) {
                         contactedSet.add(myb.id1.toString())
-                        viewModel.insertContacted(ContactedEntity(myb.id1.toString().substring(2,14), Calendar.getInstance().time))
+
+                        val contactedLocation = getCurrentLocation()
+                        val lat = contactedLocation?.latitude
+                        val lon = contactedLocation?.longitude
+
+                        viewModel.insertContacted(ContactedEntity(myb.id1.toString().substring(2,14),lat, lon, Calendar.getInstance().time))
                         Log.d(TAG, "Inserted: " + myb.id1.toString().substring(2,14))
                     }
                     remoteBeaconsIds.add(myb)

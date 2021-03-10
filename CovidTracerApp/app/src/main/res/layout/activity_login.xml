@@ -5,47 +5,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_margin="15dp"
-                android:id="@+id/loginField"
-                android:hint="Your ID"
-                android:textColorHint="@android:color/background_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:boxStrokeColor="@android:color/background_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:layout_constraintHorizontal_bias="0.482" app:layout_constraintVertical_bias="0.648">
+            android:id="@+id/passwordField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
+            android:hint="Your Password"
+            android:textColorHint="@android:color/background_dark"
+            app:boxStrokeColor="@android:color/background_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.648">
 
             <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/loginEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                android:id="@+id/passwordEt"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="15dp"
+            android:hint="Your ID"
+            android:textColorHint="@android:color/background_dark"
+            app:boxStrokeColor="@android:color/background_dark"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="@string/login"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/loginField"
-                app:layout_constraintStart_toStartOf="@+id/loginField"
-                app:layout_constraintTop_toBottomOf="@+id/loginField" app:layout_constraintHorizontal_bias="0.495"
-                android:fontFamily="@font/coda"/>
+            android:id="@+id/loginBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:fontFamily="@font/coda"
+            android:text="@string/login"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
         <FrameLayout
             android:id="@+id/loaderLayout"
             android:layout_width="0dp"
@@ -63,14 +92,15 @@
                 android:layout_gravity="center" />
 
         </FrameLayout>
+
         <ImageView
-                android:layout_width="240dp"
-                android:layout_height="214dp" app:srcCompat="@drawable/social_distancing"
-                android:id="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/loginField" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-
+            android:id="@+id/imageView"
+            android:layout_width="240dp"
+            android:layout_height="214dp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/social_distancing" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

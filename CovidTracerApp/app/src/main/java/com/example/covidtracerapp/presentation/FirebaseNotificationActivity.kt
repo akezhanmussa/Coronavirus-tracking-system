@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.covidtracerapp.R
+import kotlinx.android.synthetic.main.activity_firebase_notification.tvLocationLat
+import kotlinx.android.synthetic.main.activity_firebase_notification.tvLocationLon
 import kotlinx.android.synthetic.main.activity_firebase_notification.tvPresentInLocalList
 import kotlinx.android.synthetic.main.activity_firebase_notification.tvReceivedId
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -27,17 +29,23 @@ class FirebaseNotificationActivity : AppCompatActivity() {
         viewModel.localListState.observe(this, Observer {
             when (it) {
                 is Resource.Success -> {
-                    Log.d("TAGGA", "onCreate: HERERERE")
-                    tvPresentInLocalList.text = it.data.toString()
+                    if (it.data!=null){
+                        tvPresentInLocalList.text = "PRESENT in your list"
+                        tvLocationLat.text = it.data.lat.toString()
+                        tvLocationLon.text = it.data.lon.toString()
+                    }else{
+                        tvPresentInLocalList.text = "NOT PRESENT in your list"
+                    }
                 }
                 else -> {
+                    showToast("error")
                 }
             }
         })
 
     }
 
-    private fun showToast(id: String?) {
-        Toast.makeText(this, id, Toast.LENGTH_SHORT).show()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

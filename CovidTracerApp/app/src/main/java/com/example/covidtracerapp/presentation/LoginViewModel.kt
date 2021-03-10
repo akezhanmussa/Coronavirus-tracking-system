@@ -12,10 +12,34 @@ class LoginViewModel(
     private val repository: Repository
 ) : ViewModel(){
 
-
-
     val loginState : MutableLiveData<Resource<User>> =
         MutableLiveData()
+
+    val tokenState : MutableLiveData<Resource<String>> = MutableLiveData()
+
+    fun getToken(id: String, password: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            tokenState.postValue(Resource.Loading)
+            try {
+                val tokenEntity = repository.getToken(id, password)
+                if (tokenEntity.accessToken!=null){
+                    tokenState.postValue(
+                        Resource.Success(
+                            tokenEntity.accessToken
+                        )
+                    )
+                    onLoginClicked(id)
+                }
+            } catch (throwable: Throwable) {
+                tokenState.postValue(
+                    Resource.Error(
+                        "Error getting Token"
+                    )
+                )
+            }
+        }
+    }
+
 
     fun onLoginClicked(id: String){
         viewModelScope.launch(Dispatchers.IO) {

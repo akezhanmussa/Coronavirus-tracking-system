@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.covidtracerapp.di.authModule
 import com.example.covidtracerapp.di.covidModule
 import com.example.covidtracerapp.presentation.ShowBeaconsActivity
 import org.altbeacon.beacon.BeaconManager
@@ -35,7 +36,7 @@ class App : Application(), BootstrapNotifier {
 
         startKoin {
             androidContext(this@App)
-            modules(covidModule)
+            modules(covidModule, authModule)
         }
 
         val beaconManager =

@@ -8,6 +8,10 @@ import androidx.room.Query
 
 @Dao
 interface ContactedDAO {
+
+    @Query("SELECT * FROM $ContactedTable where id == :id")
+    suspend fun getContactedPerson(id: String) : ContactedEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertContacted(contactedEntity: ContactedEntity?)
 

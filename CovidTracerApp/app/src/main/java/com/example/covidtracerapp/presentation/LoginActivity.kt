@@ -15,6 +15,7 @@ import com.example.covidtracerapp.R
 import kotlinx.android.synthetic.main.activity_login.loaderLayout
 import kotlinx.android.synthetic.main.activity_login.loginBtn
 import kotlinx.android.synthetic.main.activity_login.loginField
+import kotlinx.android.synthetic.main.activity_login.passwordField
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -28,12 +29,23 @@ class LoginActivity : AppCompatActivity() {
         loginBtn.setOnClickListener {
             hideKeyboard()
             var id = loginField.editText?.text.toString()
+            var password = passwordField.editText?.text.toString()
+
             if (id.isNullOrBlank()) {
                 loginField.error = "ID can't be empty"
                 loginField.isErrorEnabled = true
-            } else {
+            }
+
+            if (password.isNullOrBlank()) {
+                passwordField.error = "Password can't be empty"
+                passwordField.isErrorEnabled = true
+            }
+
+            if (id.isNotBlank() && password.isNotBlank()) {
                 loginField.error = null
-                viewModel.onLoginClicked(id)
+                passwordField.error = null
+//                viewModel.onLoginClicked(id)
+                viewModel.getToken(id, password)
             }
         }
 
