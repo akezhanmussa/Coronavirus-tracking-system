@@ -176,6 +176,9 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
         beaconsRecyclerView.adapter = adapter
 
+        //TODO: Inserting fake contactedEntity for checking firebase notifications
+//        viewModel.insertContacted(ContactedEntity("010101000006",59.3, 71.0, Calendar.getInstance().time))
+
         verifyBluetooth()
         checkPermission()
         val uid = currentUser!!.id

@@ -4,17 +4,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.example.covidtracerapp.R
-import kotlinx.android.synthetic.main.activity_firebase_notification.tvLocationLat
-import kotlinx.android.synthetic.main.activity_firebase_notification.tvLocationLon
-import kotlinx.android.synthetic.main.activity_firebase_notification.tvPresentInLocalList
-import kotlinx.android.synthetic.main.activity_firebase_notification.tvReceivedId
+import kotlinx.android.synthetic.main.activity_firebase_notification.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FirebaseNotificationActivity : AppCompatActivity() {
 
     private val viewModel: FirebaseNotificationViewModel by viewModel()
+    private val TAG = FirebaseNotificationActivity::class.java.simpleName
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +28,18 @@ class FirebaseNotificationActivity : AppCompatActivity() {
         viewModel.localListState.observe(this, Observer {
             when (it) {
                 is Resource.Success -> {
-                    if (it.data!=null){
-                        tvPresentInLocalList.text = "PRESENT in your list"
-                        tvLocationLat.text = it.data.lat.toString()
-                        tvLocationLon.text = it.data.lon.toString()
-                    }else{
-                        tvPresentInLocalList.text = "NOT PRESENT in your list"
-                    }
+                    textView3.isVisible = true
+                    textView4.isVisible = true
+                    Log.v(TAG, "Resource.Success")
+                    tvPresentInLocalList.text = getString(R.string.present_in_list)
+                    tvLocationLat.text = it.data.lat.toString()
+                    tvLocationLon.text = it.data.lon.toString()
                 }
                 else -> {
-                    showToast("error")
+                    Log.v(TAG, "Resource.Fail")
+                    tvPresentInLocalList.text = getString(R.string.not_present_in_list)
+                    textView3.isVisible = false
+                    textView4.isVisible = false
                 }
             }
         })

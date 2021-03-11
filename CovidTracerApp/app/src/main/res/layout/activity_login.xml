@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordField"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:layout_marginTop="20dp"
-            android:hint="Your Password"
+            android:hint="@string/your_password"
             android:textColorHint="@android:color/background_dark"
             app:boxStrokeColor="@android:color/background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,9 +29,10 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEt"
-                android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -42,13 +43,15 @@
             android:layout_height="wrap_content"
 
             android:layout_margin="15dp"
-            android:hint="Your ID"
+            android:hint="@string/your_id"
             android:textColorHint="@android:color/background_dark"
             app:boxStrokeColor="@android:color/background_dark"
             app:layout_constraintBottom_toTopOf="@+id/passwordField"
             app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/passwordField"
-            app:layout_constraintTop_toBottomOf="@+id/imageView">
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.875">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/loginEt"
@@ -99,8 +102,36 @@
             android:layout_height="214dp"
             app:layout_constraintBottom_toTopOf="@+id/passwordField"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.265"
             app:srcCompat="@drawable/social_distancing" />
+
+        <TextView
+            android:id="@+id/tvIncorrectCredentials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/id_or_password_incorrect"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
+
+        <ImageView
+            android:id="@+id/ivIncorrectCredentials"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="35dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tvIncorrectCredentials"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvIncorrectCredentials"
+            app:layout_constraintTop_toTopOf="@+id/tvIncorrectCredentials"
+            app:srcCompat="@drawable/error_sign" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
