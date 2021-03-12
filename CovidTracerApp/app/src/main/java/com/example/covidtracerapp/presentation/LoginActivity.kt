@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }else {
                 loginBtnProgress.startAnimation()
-                viewModel.getToken("010101000006", "TestPassword")
+                viewModel.getToken("010101000006", "TestPassword6")
             }
         }
 

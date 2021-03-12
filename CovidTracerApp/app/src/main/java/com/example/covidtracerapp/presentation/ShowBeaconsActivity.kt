@@ -11,9 +11,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.os.RemoteException
 import android.text.Html
 import android.util.Log
@@ -33,11 +33,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.covidtracerapp.App
-import com.example.covidtracerapp.BackgroundService
+import com.example.covidtracerapp.*
 import com.example.covidtracerapp.R
-import com.example.covidtracerapp.TimedBeaconSimulator
-import com.example.covidtracerapp.Utils
 import com.example.covidtracerapp.Utils.generateUidNamespace
 import com.example.covidtracerapp.database.ContactedEntity
 import com.example.covidtracerapp.geofencing.GeofenceBroadcastReceiver
@@ -46,21 +43,17 @@ import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.GeofencingRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.beacons_list_item.view.*
-import org.altbeacon.beacon.*
+import org.altbeacon.beacon.BeaconConsumer
+import org.altbeacon.beacon.BeaconManager
+import org.altbeacon.beacon.RangeNotifier
+import org.altbeacon.beacon.Region
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -80,7 +73,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     private val timedSimulator = TimedBeaconSimulator()
 
     private var locationPermissionGranted: Boolean = false
-    var fusedLocationProviderClient: FusedLocationProviderClient? = null
+//    var fusedLocationProviderClient: FusedLocationProviderClient? = null
+
+    val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(this)
+    }
 
     private val FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION
     private val COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -224,7 +221,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             startActivity(intent)
         }
 
-        var simulate = false
+        var simulate = true
         if(simulate) {
             BeaconManager.setBeaconSimulator(timedSimulator)
             timedSimulator.createBasicSimulatedBeacons()
@@ -427,7 +424,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         Log.i("testing_log_adapater", log!!)
     }
 
-    fun getCurrentLocation(): LatLng?{
+    fun getCurrentLocation(id: String){
 
         val permissions = arrayOf<String>(FINE_LOCATION, COARSE_LOCATION)
         if (locationPermissionGranted){
@@ -448,16 +445,17 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
         }
 
-        val location = fusedLocationProviderClient?.lastLocation
+        val location = fusedLocationProviderClient.lastLocation
         var latLng: LatLng? = null
         location?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val currentLocation = task.result as android.location.Location
+                Log.v(TAG, "getCurrentLocation:Success ${currentLocation.latitude} ${currentLocation.longitude}")
                 LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
-            }
-        }
+                viewModel.insertContacted(ContactedEntity(id.substring(2,14),currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
 
-        return latLng
+            }else Log.v(TAG, "getCurrentLocation:Error")
+        }
     }
 
     override fun onBeaconServiceConnect() {
@@ -473,17 +471,10 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     }
                     if(myb.distance < 3 && !contactedSet.contains(myb.id1.toString())) {
                         contactedSet.add(myb.id1.toString())
-
-                        val contactedLocation = getCurrentLocation()
-                        val lat = contactedLocation?.latitude
-                        val lon = contactedLocation?.longitude
-
-                        viewModel.insertContacted(ContactedEntity(myb.id1.toString().substring(2,14),lat, lon, Calendar.getInstance().time))
-                        Log.d(TAG, "Inserted: " + myb.id1.toString().substring(2,14))
+                        getCurrentLocation(myb.id1.toString())
                     }
                     remoteBeaconsIds.add(myb)
                 }
-
                 adapter.updateList(remoteBeaconsIds.toMutableList())
             }else{
                 Log.d(TAG, "onBeaconServiceConnect: ISEMPTY")
