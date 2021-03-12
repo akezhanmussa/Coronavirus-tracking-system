@@ -21,47 +21,58 @@ class LoginActivity : AppCompatActivity() {
     private val viewModel : LoginViewModel by viewModel()
     private val TAG = LoginActivity::class.java.simpleName
 
+    //TODO: Login Skip for debugging if true
+    private val skipLogin = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        loginBtn.setOnClickListener {
-            hideKeyboard()
-            var id = loginField.editText?.text.toString()
-            var password = passwordField.editText?.text.toString()
+        loginBtnProgress.setOnClickListener {
+            if(!skipLogin) {
+                hideKeyboard()
+                var id = loginField.editText?.text.toString()
+                var password = passwordField.editText?.text.toString()
 
-            if (id.isNullOrBlank()) {
-                loginField.error = "ID can't be empty"
-                loginField.isErrorEnabled = true
-            }
+                if (id.isNullOrBlank()) {
+                    loginField.error = "ID can't be empty"
+                    loginField.isErrorEnabled = true
+                }
 
-            if (password.isNullOrBlank()) {
-                passwordField.error = "Password can't be empty"
-                passwordField.isErrorEnabled = true
-            }
+                if (password.isNullOrBlank()) {
+                    passwordField.error = "Password can't be empty"
+                    passwordField.isErrorEnabled = true
+                }
 
-            if (id.isNotBlank() && password.isNotBlank()) {
-                loginField.error = null
-                passwordField.error = null
+                if (id.isNotBlank() && password.isNotBlank()) {
+                    loginField.error = null
+                    passwordField.error = null
 //                viewModel.onLoginClicked(id)
-                viewModel.getToken(id, password)
+                    loginBtnProgress.startAnimation()
+                    viewModel.getToken(id, password)
+                }
+            }else {
+                loginBtnProgress.startAnimation()
+                viewModel.getToken("010101000006", "TestPassword")
             }
-
-            //TODO: Login Skipped for debugging
-//            viewModel.getToken("010101000006", "TestPassword")
         }
 
         viewModel.tokenState.observe(this, Observer {
-            if (it is Resource.Error) setErrorVisible(true)
+            if (it is Resource.Error) {
+                loginBtnProgress.revertAnimation()
+                setErrorVisible(true)
+            }
         })
 
         viewModel.loginState.observe(this, Observer {
-            loaderLayout.isVisible = it is Resource.Loading
+//            loaderLayout.isVisible = it is Resource.Loading
             setErrorVisible(false)
 
             when (it) {
                 is Resource.Success -> {
                     val intent = Intent(this, ShowBeaconsActivity::class.java)
+                    loginBtnProgress.revertAnimation()
+                    loginBtnProgress.dispose()
                     intent.putExtra("USER", it.data)
                     startActivity(intent)
                     finish()

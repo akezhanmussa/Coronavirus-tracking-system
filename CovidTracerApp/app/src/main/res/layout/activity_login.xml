@@ -61,18 +61,38 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/loginBtn"
+<!--        <Button-->
+<!--            android:id="@+id/loginBtn"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:backgroundTint="@color/colorPrimary"-->
+<!--            android:fontFamily="@font/coda"-->
+<!--            android:text="@string/login"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/passwordField"-->
+<!--            app:layout_constraintHorizontal_bias="0.495"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/passwordField"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/passwordField" />-->
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+            android:id="@+id/loginBtnProgress"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/ic_login_button"
             android:fontFamily="@font/coda"
             android:text="@string/login"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:initialCornerAngle="4dp"
+            app:spinning_bar_color = "@android:color/white"
             app:layout_constraintEnd_toEndOf="@+id/passwordField"
             app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="@+id/passwordField"

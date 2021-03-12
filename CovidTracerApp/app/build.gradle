@@ -110,4 +110,6 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.0.8'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
+
 }
