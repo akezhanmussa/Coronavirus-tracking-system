@@ -68,7 +68,7 @@ import java.util.*
 const val REQUEST_ENABLE_BT = 1
 const val ALT_BEACON = "m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25"
 private const val TAG = "MainActivity"
-var USER_ID = "USER_ID"
+//var USER_ID = "USER_ID"
 var USER_CITY : String = ""
 var USER_COUNTRY : String = ""
 var USER_LOCATION : Location? = null
@@ -505,6 +505,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     companion object {
         const val CHANNEL_ID = "exampleForegroundServiceChannel"
+        var USER_ID = "USER_ID"
         private const val PERMISSION_REQUEST_FINE_LOCATION = 1
         private const val PERMISSION_REQUEST_BACKGROUND_LOCATION = 2
         const val sysIdKey = "sharedPrefKey"
