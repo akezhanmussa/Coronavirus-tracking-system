@@ -7,9 +7,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.senior.server.domain.Coordinate;
+import com.senior.server.domain.HotSpot;
 import com.senior.server.domain.Location;
 import com.senior.server.domain.User;
 import com.senior.server.services.DataFilterService;
+import com.senior.server.services.HotSpotModificationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class DataRequestController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserVerificationController.class);
     private DataFilterService dataFilterService;
+    private HotSpotModificationService hotSpotModificationService;
 
     @PostConstruct
     public void initialize() {
@@ -52,6 +55,11 @@ public class DataRequestController {
     @Autowired
     public void setDataFilterService(DataFilterService dataFilterService) {
         this.dataFilterService = dataFilterService;
+    }
+
+    @Autowired
+    public void setHotSpotModificationService(HotSpotModificationService hotSpotModificationService) {
+        this.hotSpotModificationService = hotSpotModificationService;
     }
 
     @RequestMapping(path = "get-all-positive", method = RequestMethod.GET)
@@ -77,7 +85,7 @@ public class DataRequestController {
             response.put("status", id + " was not updated  since it does not exist in DB");
         }
         String topic = "all_devices";
-        // See documentation on defining a message payload.
+
         Message message = Message.builder()
                 .putData("id", id)
                 .setTopic(topic)
@@ -104,8 +112,26 @@ public class DataRequestController {
     @RequestMapping(path = "hotspots", method = RequestMethod.GET)
     public ResponseEntity<?> getHotSpots(
             Location location,
-            Integer limit){
+            Integer limit) {
         List<Coordinate> coordinates = dataFilterService.getPlacesByLocation(location, limit);
         return new ResponseEntity(coordinates, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "hotspotsV2", method = RequestMethod.GET)
+    public ResponseEntity<?> getHotSpotsV2(
+            Location location,
+            Integer limit) {
+        List<HotSpot> coordinates = hotSpotModificationService.getHotSpots();
+        return new ResponseEntity(coordinates, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "new-case", method = RequestMethod.POST)
+    public ResponseEntity<?> addNewCase(
+            @RequestBody Map<String, Double> body) {
+        Map<String, String> response = new HashMap();
+        Double latitude = body.get("latitude");
+        Double longitude = body.get("longitude");
+        hotSpotModificationService.addCase(latitude, longitude);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }
