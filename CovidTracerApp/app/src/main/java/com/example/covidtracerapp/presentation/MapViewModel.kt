@@ -47,4 +47,8 @@ class MapViewModel(
         }
     }
 
+    fun refreshHotspots(userLocation: Location){
+        getHotspotsByLocation(userLocation)
+    }
+
 }

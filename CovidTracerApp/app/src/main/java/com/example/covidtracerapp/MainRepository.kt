@@ -80,6 +80,14 @@ class MainRepository(
         return covidApi.getHotspotsByLocation(token, userLocation.city, userLocation.country)
     }
 
+    override suspend fun sendLocationOfHotspot(lat: Double, lon: Double) {
+        val body = mapOf(
+            "latitude" to lat,
+            "longitude" to lon
+        )
+        covidApi.sendLocationOfHotspot(body)
+    }
+
     override suspend fun insertContacted(contactedEntity: ContactedEntity) {
         contactedDAO.insertContacted(contactedEntity)
     }

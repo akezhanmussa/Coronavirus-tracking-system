@@ -12,6 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -95,6 +96,12 @@ class ShowBeaconsViewModel(
                     )
                 )
             }
+        }
+    }
+
+    fun sendLocationOfHotspot(latitude: Double, longitude: Double) {
+        viewModelScope.async(Dispatchers.IO) {
+            repository.sendLocationOfHotspot(latitude, longitude)
         }
     }
 }

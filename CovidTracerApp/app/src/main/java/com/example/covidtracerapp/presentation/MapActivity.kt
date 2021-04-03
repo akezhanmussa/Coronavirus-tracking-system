@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -75,7 +77,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (task.isSuccessful) {
                 val currentLocation = task.result as android.location.Location
                 val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-                gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 25f))
+                gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                 gMap?.isMyLocationEnabled = true
             }
         }
@@ -94,6 +96,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.map_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var id = item.itemId
+        if(id == R.id.mapRefreshBtn){
+            refreshHotspots()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+
+    }
+
+    private fun refreshHotspots(){
+        mapViewModel.refreshHotspots(USER_LOCATION!!)
+    }
 
     private fun showToast(msg: String) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
@@ -105,25 +125,33 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 LatLng(
                     data[0].latitude,
                     data[0].longitude
-                ), 25f
+                ), 10f
             )
         )
 
+        gMap?.clear()
+
         for (hotspot in data){
             Log.d(TAG, "addCircles: adding Circle")
-//            gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[i].longitude, data[i].latitude), 25f))
-            gMap!!.addCircle(
-                CircleOptions()
-                    .center(LatLng(hotspot.latitude, hotspot.longitude))
-                    .radius(hotspot.radius.toDouble())
-                    .strokeColor(Color.RED)
-                    .fillColor(Color.RED)
-            )
+//
+//           gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[i].longitude, data[i].latitude), 25f))
+            if (hotspot.radius > 0){
+                gMap!!.addCircle(
+                    CircleOptions()
+                        .center(LatLng(hotspot.latitude, hotspot.longitude))
+                        .radius(hotspot.radius.toDouble())
+                        .strokeColor(Color.RED)
+                        .fillColor(Color.RED)
+                )
 
-            val markerOptions = MarkerOptions()
-            markerOptions.position(LatLng(hotspot.latitude, hotspot.longitude))
-            gMap?.addMarker(markerOptions.title("lat: ${hotspot.latitude}, lon: ${hotspot.longitude}"))
+                val markerOptions = MarkerOptions()
+                markerOptions.position(LatLng(hotspot.latitude, hotspot.longitude))
+                gMap?.addMarker(markerOptions.title("lat: ${hotspot.latitude}, lon: ${hotspot.longitude}, cases: ${hotspot.cases ?: 0}"))
+            }
+
         }
+
+        showToast("Hotspots were refreshed")
 
 //        for(location in data){
 //

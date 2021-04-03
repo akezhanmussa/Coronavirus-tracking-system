@@ -303,34 +303,34 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
     @SuppressLint("MissingPermission")
     private fun addGeofences(listOfHotspots : List<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>){
-        // TODO: Check for both fine and background ?
-        if (!checkLocationPermissions()) return
-        val listOfGeofences = mutableListOf<Geofence>()
-
-        for (hotspot in listOfHotspots){
-            Log.d(TAG, "addGeofences: adding Geofence" + hotspot.latitude + " - " + hotspot.longitude)
-            val geofence = Geofence.Builder()
-                    .setRequestId(LatLng(hotspot.latitude, hotspot.longitude).toString())
-                    .setCircularRegion(hotspot.latitude, hotspot.longitude, hotspot.radius.toFloat())
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                    .build()
-            listOfGeofences.add(geofence)
-        }
-
-        val geofenceRequest = GeofencingRequest.Builder()
-                .addGeofences(listOfGeofences)
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-                .build()
-
-        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent).run {
-            addOnSuccessListener {
-                Log.i(TAG, "addGeofences: Success")
-            }
-            addOnFailureListener {
-                Log.i(TAG, "addGeofences: Failure")
-            }
-        }
+//        // TODO: Check for both fine and background ?
+//        if (!checkLocationPermissions()) return
+//        val listOfGeofences = mutableListOf<Geofence>()
+//
+//        for (hotspot in listOfHotspots){
+//            Log.d(TAG, "addGeofences: adding Geofence" + hotspot.latitude + " - " + hotspot.longitude)
+//            val geofence = Geofence.Builder()
+//                    .setRequestId(LatLng(hotspot.latitude, hotspot.longitude).toString())
+//                    .setCircularRegion(hotspot.latitude, hotspot.longitude, hotspot.radius.toFloat())
+//                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+//                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+//                    .build()
+//            listOfGeofences.add(geofence)
+//        }
+//
+//        val geofenceRequest = GeofencingRequest.Builder()
+//                .addGeofences(listOfGeofences)
+//                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+//                .build()
+//
+////        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent).run {
+////            addOnSuccessListener {
+////                Log.i(TAG, "addGeofences: Success")
+////            }
+////            addOnFailureListener {
+////                Log.i(TAG, "addGeofences: Failure")
+////            }
+////        }
     }
     private fun updateUserUi(currentUser: User){
         USER_CITY = currentUser?.location!!.city
@@ -425,7 +425,6 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
 
     fun getCurrentLocation(id: String){
-
         val permissions = arrayOf<String>(FINE_LOCATION, COARSE_LOCATION)
         if (locationPermissionGranted){
             if (ActivityCompat.checkSelfPermission(
@@ -452,6 +451,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                 val currentLocation = task.result as android.location.Location
                 Log.v(TAG, "getCurrentLocation:Success ${currentLocation.latitude} ${currentLocation.longitude}")
                 LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
+                viewModel.sendLocationOfHotspot(currentLocation.latitude, currentLocation.latitude)
                 viewModel.insertContacted(ContactedEntity(id.substring(2,14),currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
 
             }else Log.v(TAG, "getCurrentLocation:Error")

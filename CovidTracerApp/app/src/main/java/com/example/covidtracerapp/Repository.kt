@@ -19,6 +19,7 @@ interface Repository {
     suspend fun getAllContactedIds() : List<String>
     suspend fun getContactedPerson(id: String): ContactedEntity
     suspend fun getHotspotsByLocation(userLocation: Location) : List<HotSpotCoordinate>
+    suspend fun sendLocationOfHotspot(lat: Double, lon: Double)
     suspend fun insertContacted(contactedEntity: ContactedEntity)
     suspend fun sendContacted(city: String, country: String, contactedIds: List<String>) : List<User>
     suspend fun deleteContacted(contactedEntity: ContactedEntity)

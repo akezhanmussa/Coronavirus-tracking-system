@@ -25,7 +25,7 @@ interface CovidApi {
     @GET("data-api/get-all-positive")
     fun getPositive() : Observable<List<String>>
 
-    @GET("data-api/hotspots")
+    @GET("data-api/hotspotsV2")
     suspend fun getHotspotsByLocation(@Header("Authorization") token: String,
                                       @Query("city") city: String,
                                       @Query("country") country: String,
@@ -40,4 +40,8 @@ interface CovidApi {
                                  @Query("city") city: String,
                                  @Query("country") country: String,
                                  @Body ids: List<String>) : List<User>
+
+    @POST("data-api/new-case")
+    suspend fun sendLocationOfHotspot(@Body body: Map<String, Double>)
+
 }
