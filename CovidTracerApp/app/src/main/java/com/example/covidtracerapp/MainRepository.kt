@@ -85,7 +85,7 @@ class MainRepository(
             "latitude" to lat,
             "longitude" to lon
         )
-        covidApi.sendLocationOfHotspot(body)
+        covidApi.sendLocationOfHotspot(token, body)
     }
 
     override suspend fun insertContacted(contactedEntity: ContactedEntity) {

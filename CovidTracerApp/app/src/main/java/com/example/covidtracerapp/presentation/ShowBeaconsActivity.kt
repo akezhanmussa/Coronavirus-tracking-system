@@ -451,7 +451,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                 val currentLocation = task.result as android.location.Location
                 Log.v(TAG, "getCurrentLocation:Success ${currentLocation.latitude} ${currentLocation.longitude}")
                 LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
-                viewModel.sendLocationOfHotspot(currentLocation.latitude, currentLocation.latitude)
+                viewModel.sendLocationOfHotspot(51.1666679, 71.4333344)
                 viewModel.insertContacted(ContactedEntity(id.substring(2,14),currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
 
             }else Log.v(TAG, "getCurrentLocation:Error")

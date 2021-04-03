@@ -42,6 +42,7 @@ interface CovidApi {
                                  @Body ids: List<String>) : List<User>
 
     @POST("data-api/new-case")
-    suspend fun sendLocationOfHotspot(@Body body: Map<String, Double>)
+    suspend fun sendLocationOfHotspot(@Header("Authorization") token: String,
+                                      @Body body: Map<String, Double>)
 
 }

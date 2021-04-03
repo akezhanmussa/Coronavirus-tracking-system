@@ -132,10 +132,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         gMap?.clear()
 
         for (hotspot in data){
-            Log.d(TAG, "addCircles: adding Circle")
+            Log.d(TAG, "addCircles: adding Circle + lat: " + hotspot.latitude + " lon: " + hotspot.longitude)
 //
 //           gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(data[i].longitude, data[i].latitude), 25f))
             if (hotspot.radius > 0){
+                Log.d(TAG, "addCircles: FOUND RADIUS > 0 " + hotspot.radius)
                 gMap!!.addCircle(
                     CircleOptions()
                         .center(LatLng(hotspot.latitude, hotspot.longitude))
@@ -147,6 +148,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 val markerOptions = MarkerOptions()
                 markerOptions.position(LatLng(hotspot.latitude, hotspot.longitude))
                 gMap?.addMarker(markerOptions.title("lat: ${hotspot.latitude}, lon: ${hotspot.longitude}, cases: ${hotspot.cases ?: 0}"))
+            }else{
+                Log.d(TAG, "addCircles: FOUND RADIUS = 0" + hotspot.latitude + " long:" + hotspot.longitude)
             }
 
         }

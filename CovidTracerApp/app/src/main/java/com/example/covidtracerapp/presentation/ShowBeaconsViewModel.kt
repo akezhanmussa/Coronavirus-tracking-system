@@ -100,7 +100,7 @@ class ShowBeaconsViewModel(
     }
 
     fun sendLocationOfHotspot(latitude: Double, longitude: Double) {
-        viewModelScope.async(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.sendLocationOfHotspot(latitude, longitude)
         }
     }
