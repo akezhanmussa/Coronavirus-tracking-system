@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.senior.server.services.HotSpotModificationService;
 
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest
 class ServerApplicationTests {
@@ -34,5 +35,10 @@ class ServerApplicationTests {
     public void testHotSpotModificationService() {
         HotSpot hotSpot = hotSpotModificationService.addCase(51.1666679, 71.4333344);
         List<HotSpot> coordinates = hotSpotModificationService.getHotSpots();
+        for (HotSpot coordiate: coordinates) {
+            if (coordiate.getRadius() > 0) {
+                assert Objects.equals(coordiate.getRadius(), 20);
+            }
+        }
     }
 }

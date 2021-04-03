@@ -34,6 +34,10 @@ public class HotSpot {
         this.cases = cases;
     }
 
+    public Integer getCases() {
+        return cases;
+    }
+
     public void increaseRadius() {
         this.cases += 1;
         this.radius += 20;

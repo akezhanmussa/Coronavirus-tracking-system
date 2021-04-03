@@ -36,6 +36,7 @@ public class HotSpotModificationServiceImpl implements HotSpotModificationServic
         Integer longitudeIndex = longtitudes.getIndexFor(longitude);
         if (latitudeIndex == -1 || longitudeIndex == -1) {
             logger.info("Case with latitude:" + latitude + ", longitude:" + longitude + " is invalid for Astana grid");
+            return null;
         }
         HotSpot targetHotSpot = this.grid[latitudeIndex][longitudeIndex];
         targetHotSpot.increaseRadius();

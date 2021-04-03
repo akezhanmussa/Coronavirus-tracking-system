@@ -128,10 +128,15 @@ public class DataRequestController {
     @RequestMapping(path = "new-case", method = RequestMethod.POST)
     public ResponseEntity<?> addNewCase(
             @RequestBody Map<String, Double> body) {
-        Map<String, String> response = new HashMap();
+        Map<String, Object> response = new HashMap();
         Double latitude = body.get("latitude");
         Double longitude = body.get("longitude");
-        hotSpotModificationService.addCase(latitude, longitude);
+        HotSpot hotSpot = hotSpotModificationService.addCase(latitude, longitude);
+        logger.info("latitude " + latitude);
+        logger.info("longitude " + longitude);
+        if (hotSpot == null) {
+            logger.info("Hotspot was not found");
+        }
         return new ResponseEntity(response, HttpStatus.OK);
     }
 }
