@@ -3,7 +3,7 @@ package com.senior.server.domain;
 public class HotSpot {
     private Double latitude;
     private Double longitude;
-    private Double radius;
+    private Integer radius;
     private Integer cases;
 
     public Double getLatitude() {
@@ -22,11 +22,11 @@ public class HotSpot {
         this.longitude = longitude;
     }
 
-    public Double getRadius() {
+    public Integer getRadius() {
         return radius;
     }
 
-    public void setRadius(Double radius) {
+    public void setRadius(Integer radius) {
         this.radius = radius;
     }
 

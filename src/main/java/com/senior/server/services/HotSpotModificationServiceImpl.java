@@ -63,7 +63,7 @@ public class HotSpotModificationServiceImpl implements HotSpotModificationServic
                 HotSpot hotSpot = new HotSpot();
                 hotSpot.setLatitude(latitudeMidList.get(latInd));
                 hotSpot.setLongitude(longtitudeMidList.get(longInd));
-                hotSpot.setRadius(0.0);
+                hotSpot.setRadius(0);
                 hotSpot.setCases(0);
                 grid[latInd][longInd] = hotSpot;
             }
