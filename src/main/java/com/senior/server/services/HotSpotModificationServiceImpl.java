@@ -14,6 +14,7 @@ import java.util.List;
 @Service
 public class HotSpotModificationServiceImpl implements HotSpotModificationService {
     private Integer GRID_LEN = 18;
+    private Integer INITIAL_RADIUS = 10;
     private HotSpot[][] grid;
     private LineSpace latitudes;
     private LineSpace longtitudes;
@@ -63,7 +64,7 @@ public class HotSpotModificationServiceImpl implements HotSpotModificationServic
                 HotSpot hotSpot = new HotSpot();
                 hotSpot.setLatitude(latitudeMidList.get(latInd));
                 hotSpot.setLongitude(longtitudeMidList.get(longInd));
-                hotSpot.setRadius(0);
+                hotSpot.setRadius(INITIAL_RADIUS);
                 hotSpot.setCases(0);
                 grid[latInd][longInd] = hotSpot;
             }
