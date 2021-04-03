@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class HotSpotModificationServiceImpl implements HotSpotModificationService {
     private Integer GRID_LEN = 18;
-    private Integer INITIAL_RADIUS = 10;
+    private Integer INITIAL_RADIUS = 0;
     private HotSpot[][] grid;
     private LineSpace latitudes;
     private LineSpace longtitudes;
