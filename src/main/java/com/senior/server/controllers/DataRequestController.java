@@ -32,7 +32,7 @@ import java.util.Set;
 @RequestMapping(path = "/data-api")
 public class DataRequestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserVerificationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataRequestController.class);
     private DataFilterService dataFilterService;
     private HotSpotModificationService hotSpotModificationService;
 
