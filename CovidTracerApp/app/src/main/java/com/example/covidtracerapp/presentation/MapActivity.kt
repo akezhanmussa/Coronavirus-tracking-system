@@ -74,7 +74,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val location = fusedLocationProviderClient.lastLocation
         location.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+            if (task.isSuccessful && task.result!=null) {
                 val currentLocation = task.result as android.location.Location
                 val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
                 gMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
@@ -147,7 +147,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val markerOptions = MarkerOptions()
                 markerOptions.position(LatLng(hotspot.latitude, hotspot.longitude))
-                gMap?.addMarker(markerOptions.title("lat: ${hotspot.latitude}, lon: ${hotspot.longitude}, cases: ${hotspot.cases ?: 0}"))
+                gMap?.addMarker(markerOptions.title("Cases: ${hotspot.cases ?: 0}"))
             }else{
                 Log.d(TAG, "addCircles: FOUND RADIUS = 0" + hotspot.latitude + " long:" + hotspot.longitude)
             }

@@ -7,7 +7,7 @@
         android:id="@+id/table_heading_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/table_border"
+        android:background="#60A7B9"
         >
 
         <TableRow

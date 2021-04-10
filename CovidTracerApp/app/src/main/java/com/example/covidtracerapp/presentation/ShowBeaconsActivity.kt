@@ -18,9 +18,7 @@ import android.os.Looper
 import android.os.RemoteException
 import android.text.Html
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -116,6 +114,19 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             Log.d(TAG, "onReceive: RECEIVED $id")
             createNotification(id)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mapIcon){
+            var intent = Intent(this, MapActivity::class.java)
+            startActivity(intent)
+        }
+        return true
     }
 
     private fun createNotification(id: String?) {
