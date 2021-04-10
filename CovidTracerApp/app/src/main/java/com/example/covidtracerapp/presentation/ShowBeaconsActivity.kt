@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
@@ -49,12 +50,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.beacons_list_item.view.*
+import kotlinx.android.synthetic.main.table_row_layout.view.*
 import org.altbeacon.beacon.BeaconConsumer
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
 import org.koin.android.viewmodel.ext.android.viewModel
+import java.lang.UnsupportedOperationException
 import java.util.*
 
 
@@ -161,10 +163,25 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         setContentView(R.layout.activity_main)
 
         val currentUser = intent.getSerializableExtra("USER") as? User
+        userIdTv.text = currentUser?.id
+        userPhoneTv.text = currentUser?.phone
+        userCountryTv.text = currentUser?.location?.country
+        userCityTv.text = currentUser?.location?.city
+        userStatusTv.text = when(currentUser?.positive){
+            true -> {
+                userStatusTv.setTextColor(Color.parseColor("#FF0000"))
+                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_coronavirus, 0, 0, 0);
+                "Infected"
+            }
+            false -> {
+                userStatusTv.setTextColor(Color.parseColor("#8BC34A"))
+                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_healthy, 0, 0, 0);
+                "Not infected"
+            }
+            null -> throw UnsupportedOperationException()
+        }
 
-        currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
-                                                        "<br/>" + "<b>" + "Country: " + "</b>" + currentUser?.location!!.country + "<br/>" + "<b>" + "City: " + "</b>" + currentUser?.location!!.city +
-                                                         "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
+
         USER_CITY = currentUser?.location!!.city
         USER_COUNTRY = currentUser?.location!!.country
         USER_ID = currentUser!!.id
@@ -198,17 +215,18 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         })
         if (!checkBackgroundLocationPermission()) requestBackgroundLocationPermission()
 
-        sendData.setOnClickListener {
-            viewModel.startTracing(
-                USER_CITY,
-                USER_COUNTRY
-            )
-        }
+//        sendData.setOnClickListener {
+//            viewModel.startTracing(
+//                USER_CITY,
+//                USER_COUNTRY
+//            )
+//        }
 
         selfReveal.setOnClickListener {
             viewModel.selfReveal(
                 USER_ID
             )
+            viewModel.updateUser(USER_ID)
         }
 
         swipeRefresh.setOnRefreshListener {
@@ -216,10 +234,10 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             swipeRefresh.isRefreshing = false
         }
 
-        imgMap.setOnClickListener{
-            var intent = Intent(this, MapActivity::class.java)
-            startActivity(intent)
-        }
+//        imgMap.setOnClickListener{
+//            var intent = Intent(this, MapActivity::class.java)
+//            startActivity(intent)
+//        }
 
         var simulate = true
         if(simulate) {
@@ -333,11 +351,23 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 ////        }
     }
     private fun updateUserUi(currentUser: User){
-        USER_CITY = currentUser?.location!!.city
-        USER_COUNTRY = currentUser?.location!!.country
-        currentUserInfoTv.text = Html.fromHtml("<b>" + "User ID: " + "</b>" + currentUser?.id.toString() + "<br/>" + "<b>" + "Telephone: " + "</b>" + currentUser?.phone  +
-            "<br/>" + "<b>" + "Country: " + "</b>" + USER_COUNTRY + "<br/>" + "<b>" + "City: " + "</b>" + USER_CITY +
-            "<br/>" + "<b>" + "Status: " + "</b>" + currentUser?.positive)
+        userIdTv.text = currentUser?.id
+        userPhoneTv.text = currentUser?.phone
+        userCountryTv.text = currentUser?.location?.country
+        userCityTv.text = currentUser?.location?.city
+        userStatusTv.text = when(currentUser?.positive){
+            true -> {
+                userStatusTv.setTextColor(Color.parseColor("#FF0000"))
+                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_coronavirus, 0, 0, 0);
+                "Infected"
+            }
+            false -> {
+                userStatusTv.setTextColor(Color.parseColor("#8BC34A"))
+                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_healthy, 0, 0, 0);
+                "Not infected"
+            }
+            null -> throw UnsupportedOperationException()
+        }
     }
 
     private fun getsystemID(): String {
@@ -447,11 +477,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val location = fusedLocationProviderClient.lastLocation
         var latLng: LatLng? = null
         location?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+            if (task.isSuccessful && task.result!=null) {
                 val currentLocation = task.result as android.location.Location
                 Log.v(TAG, "getCurrentLocation:Success ${currentLocation.latitude} ${currentLocation.longitude}")
                 LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
-                viewModel.sendLocationOfHotspot(51.1666679, 71.4333344)
+                viewModel.sendLocationOfHotspot(currentLocation.latitude, currentLocation.latitude)
                 viewModel.insertContacted(ContactedEntity(id.substring(2,14),currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
 
             }else Log.v(TAG, "getCurrentLocation:Error")
@@ -522,13 +552,13 @@ class BeaconsAdapter (
     }
 
     class BeaconsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val beaconId : TextView = itemView.beacon_id
-        val beaconDistance: TextView = itemView.beacon_distance
+        val beaconId : TextView = itemView.userIdTv
+        val beaconDistance: TextView = itemView.userDistanceTv
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeaconsViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.beacons_list_item,
+            R.layout.table_row_layout,
             parent, false)
         return BeaconsViewHolder(
             itemView
