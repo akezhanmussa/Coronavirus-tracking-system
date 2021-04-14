@@ -9,6 +9,7 @@ import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
 import com.example.covidtracerapp.presentation.model.Location
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.stream.Collector
 
 class MapViewModel(
     private val repository: Repository
@@ -27,8 +28,7 @@ class MapViewModel(
 //        locationsState.postValue(Resource.Success(fakeLocations))
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val locations = repository.getHotspotsByLocation(userLocation)
-
+                val locations = repository.getHotspotsByLocation(userLocation).filter { c -> c.radius > 0 }
                 Log.d("TAG", "getLocationsByCity: " + locations)
                 if (locations.isNotEmpty()){
                     locationsState.postValue(

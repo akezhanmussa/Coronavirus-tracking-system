@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -18,15 +19,13 @@
             android:layout_margin="15dp"
             android:layout_marginTop="20dp"
             android:hint="@string/your_password"
-            android:textColorHint="@android:color/background_dark"
-            app:passwordToggleEnabled="true"
-            app:boxStrokeColor="@android:color/background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.482"
+            app:layout_constraintHorizontal_bias="0.533"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.648">
+            app:layout_constraintVertical_bias="0.709"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEt"
@@ -36,7 +35,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/loginField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -45,8 +43,6 @@
 
             android:layout_margin="15dp"
             android:hint="@string/your_id"
-            android:textColorHint="@android:color/background_dark"
-            app:boxStrokeColor="@android:color/background_dark"
             app:layout_constraintBottom_toTopOf="@+id/passwordField"
             app:layout_constraintEnd_toEndOf="@+id/passwordField"
             app:layout_constraintHorizontal_bias="0.0"
@@ -85,38 +81,19 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="52dp"
             android:background="@drawable/ic_login_button"
-            android:fontFamily="@font/coda"
+            android:backgroundTint="?colorPrimary"
             android:text="@string/login"
-            android:textColor="@android:color/white"
+            android:textColor="?colorOnPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
             app:initialCornerAngle="4dp"
-            app:spinning_bar_color = "@android:color/white"
             app:layout_constraintEnd_toEndOf="@+id/passwordField"
-            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="@+id/passwordField"
-            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
-
-        <FrameLayout
-            android:id="@+id/loaderLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/passwordField"
+            app:spinning_bar_color="@android:color/white" />
 
         <ImageView
             android:id="@+id/imageView"
