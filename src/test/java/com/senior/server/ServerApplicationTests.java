@@ -1,7 +1,10 @@
 package com.senior.server;
 
+import com.senior.server.domain.CovidCases;
 import com.senior.server.domain.HotSpot;
 import com.senior.server.domain.LineSpace;
+import com.senior.server.domain.Location;
+import com.senior.server.services.StatisticsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +18,8 @@ class ServerApplicationTests {
 
     @Autowired
     public HotSpotModificationService hotSpotModificationService;
+    @Autowired
+    public StatisticsService statisticsService;
 
     @Test
     void contextLoads() {
@@ -40,5 +45,11 @@ class ServerApplicationTests {
                 assert Objects.equals(coordiate.getRadius(), 20);
             }
         }
+    }
+
+    @Test
+    public void testStatisticsService() {
+        CovidCases covidCases = this.statisticsService.retrieveCovidCases(new Location("Kazakhstan", "Almaty"));
+        System.out.println(covidCases);
     }
 }
