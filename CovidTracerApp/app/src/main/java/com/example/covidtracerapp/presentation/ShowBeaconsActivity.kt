@@ -75,6 +75,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     private var locationPermissionGranted: Boolean = false
 //    var fusedLocationProviderClient: FusedLocationProviderClient? = null
 
+    private var currentUser: User? = null
+
     val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(this)
     }
@@ -126,6 +128,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             var intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }
+        if (item.itemId == R.id.statsIcon){
+            var intent = Intent(this, StatisticsActivity::class.java)
+            intent.putExtra("USER", currentUser)
+            startActivity(intent)
+        }
         return true
     }
 
@@ -173,7 +180,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val currentUser = intent.getSerializableExtra("USER") as? User
+        currentUser = intent.getSerializableExtra("USER") as? User
         userIdTv.text = currentUser?.id
         userPhoneTv.text = currentUser?.phone
         userCountryTv.text = currentUser?.location?.country

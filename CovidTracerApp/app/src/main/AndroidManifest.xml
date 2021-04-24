@@ -31,7 +31,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- region SERVICE -->
+        </activity>
+        <activity android:name=".presentation.StatisticsActivity" /> <!-- region SERVICE -->
         <service android:name=".BackgroundService" /> <!-- <receiver android:name=".PowerButtonBroadcastReceiver"></receiver> -->
         <!-- endregion SERVICE -->
         <receiver
