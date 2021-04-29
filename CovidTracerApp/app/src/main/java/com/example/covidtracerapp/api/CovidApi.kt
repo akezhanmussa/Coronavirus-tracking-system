@@ -1,5 +1,6 @@
 package com.example.covidtracerapp.api
 
+import com.example.covidtracerapp.presentation.model.CovidCases
 import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
 import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
@@ -44,5 +45,10 @@ interface CovidApi {
     @POST("data-api/new-case")
     suspend fun sendLocationOfHotspot(@Header("Authorization") token: String,
                                       @Body body: Map<String, Double>)
+
+
+    @POST("statistics/covid-cases-by-location")
+    suspend fun getCovidCasesByLocation(@Header("Authorization") token: String,
+                                        @Body body: Map<String, String>) : CovidCases
 
 }

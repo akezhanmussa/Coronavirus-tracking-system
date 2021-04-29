@@ -5,14 +5,11 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.room.Room
 import com.example.covidtracerapp.api.CovidApi
-import com.example.covidtracerapp.presentation.LoginViewModel
 import com.example.covidtracerapp.MainRepository
 import com.example.covidtracerapp.Repository
-import com.example.covidtracerapp.presentation.ShowBeaconsViewModel
 import com.example.covidtracerapp.database.AppDatabase
 import com.example.covidtracerapp.database.ContactedDAO
-import com.example.covidtracerapp.presentation.FirebaseNotificationViewModel
-import com.example.covidtracerapp.presentation.MapViewModel
+import com.example.covidtracerapp.presentation.*
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -98,6 +95,12 @@ val covidModule = module{
 
     viewModel{
         FirebaseNotificationViewModel(
+            repository = get()
+        )
+    }
+
+    viewModel {
+        StatisticsViewModel(
             repository = get()
         )
     }

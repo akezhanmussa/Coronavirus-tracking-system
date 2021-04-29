@@ -7,6 +7,7 @@ import com.example.covidtracerapp.api.CovidApi
 import com.example.covidtracerapp.api.TokenEntity
 import com.example.covidtracerapp.database.ContactedDAO
 import com.example.covidtracerapp.database.ContactedEntity
+import com.example.covidtracerapp.presentation.model.CovidCases
 import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
 import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.User
@@ -99,5 +100,13 @@ class MainRepository(
 
     override suspend fun deleteContacted(contactedEntity: ContactedEntity) {
         contactedDAO.deleteContacted(contactedEntity)
+    }
+
+    override suspend fun getCovidCasesByLocation(city: String, country: String): CovidCases {
+        val body = mapOf(
+            "country" to country,
+            "city" to city
+        )
+        return covidApi.getCovidCasesByLocation(token, body)
     }
 }

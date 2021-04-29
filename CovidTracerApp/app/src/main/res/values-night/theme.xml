@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.MyApp" parent="Base.Theme.CovidTracerApp">
+    <style name="Theme.CovidTracerApp" parent="Base.Theme.CovidTracerApp">
         <item name="android:colorBackground">@color/dark_grey</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
+        <item name="colorPrimary">@color/blue_100</item>
+        <item name="colorSecondary">@color/orange_100</item>
         <item name="colorSurface">@color/dark_grey</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="colorOnBackground">@color/white</item>
