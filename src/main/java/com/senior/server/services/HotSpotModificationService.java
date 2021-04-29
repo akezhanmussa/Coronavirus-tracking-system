@@ -8,4 +8,5 @@ import java.util.List;
 public interface HotSpotModificationService {
     public HotSpot addCase(Double latitude, Double longitude);
     public List<HotSpot> getHotSpots();
+    public void clearHotSpots();
 }

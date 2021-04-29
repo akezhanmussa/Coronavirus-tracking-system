@@ -125,6 +125,12 @@ public class DataRequestController {
         return new ResponseEntity(coordinates, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "hotspotsV2-clear", method = RequestMethod.POST)
+    public ResponseEntity<?> clearHotSpotsV2() {
+        hotSpotModificationService.clearHotSpots();
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(path = "new-case", method = RequestMethod.POST)
     public ResponseEntity<?> addNewCase(
             @RequestBody Map<String, Double> body) {

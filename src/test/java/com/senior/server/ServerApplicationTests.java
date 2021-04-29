@@ -2,6 +2,7 @@ package com.senior.server;
 
 import com.senior.server.domain.CovidCases;
 import com.senior.server.domain.HotSpot;
+import com.senior.server.domain.HotSpots;
 import com.senior.server.domain.LineSpace;
 import com.senior.server.domain.Location;
 import com.senior.server.services.StatisticsService;
@@ -45,6 +46,8 @@ class ServerApplicationTests {
                 assert Objects.equals(coordiate.getRadius(), 20);
             }
         }
+        hotSpotModificationService.clearHotSpots();
+        List<HotSpot> hotSpots = hotSpotModificationService.getHotSpots();
     }
 
     @Test
