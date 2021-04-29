@@ -23,16 +23,16 @@ public class HotSpotModificationServiceImpl implements HotSpotModificationServic
     @PostConstruct
     public void init() {
         this.clearHotSpots();
-        latitudes = new LineSpace(51.024901, 51.227157, GRID_LEN + 1);
-        longtitudes = new LineSpace(71.297808, 71.592204, GRID_LEN + 1);
-        latitudes.process();
-        longtitudes.process();
-        this.gridInit();
     }
 
     @Override
     public void clearHotSpots() {
         this.grid = new HotSpot[GRID_LEN][GRID_LEN];
+        latitudes = new LineSpace(51.024901, 51.227157, GRID_LEN + 1);
+        longtitudes = new LineSpace(71.297808, 71.592204, GRID_LEN + 1);
+        latitudes.process();
+        longtitudes.process();
+        this.gridInit();
     }
 
     @Override
