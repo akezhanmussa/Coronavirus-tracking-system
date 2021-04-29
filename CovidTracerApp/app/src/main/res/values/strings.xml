@@ -5,10 +5,10 @@
     <string name="sending_local_list">Check My Person List</string>
 
     <!--Geofencing-START-->
-    <string name="geofence_notification_title">Geofence Notification</string>
-    <string name="geofence_notification_text">You are in a Hotspot!</string>
-    <string name="geofence_notification_channel_name">Geofencing Channel</string>
-    <string name="geofence_notification_channel_description">Geofencing notifications</string>
+    <string name="geofence_notification_title">Hotspot Notification</string>
+    <string name="geofence_notification_text">You are in a Hotspot! Consider leaving this place.</string>
+    <string name="geofence_notification_channel_name">Hotspot Channel</string>
+    <string name="geofence_notification_channel_description">Hotspot notifications</string>
 
     <string name="permission_denied_explanation">Grant background location permission by selecting "Allow all the time"</string>
     <string name="settings">Settings</string>
@@ -19,6 +19,4 @@
     <string name="id_or_password_incorrect">ID or password incorrect</string>
     <string name="your_password">Your Password</string>
     <string name="your_id">Your ID</string>
-    <string name="not_present_in_list">NOT PRESENT</string>
-    <string name="present_in_list">PRESENT</string>
 </resources>

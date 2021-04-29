@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     private val TAG = LoginActivity::class.java.simpleName
 
     //TODO: Login Skip for debugging if true
-    private val skipLogin = false
+    private val skipLogin = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }else {
                 loginBtnProgress.startAnimation()
-                viewModel.getToken("010101000006", "TestPassword6")
+                viewModel.getToken("010101000003", "TestPassword3")
             }
         }
 

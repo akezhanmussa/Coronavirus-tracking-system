@@ -1,5 +1,6 @@
 package com.example.covidtracerapp.presentation
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,9 @@ class StatisticsViewModel(
     fun getCovidCasesByLocation(city: String, country: String){
         viewModelScope.launch {
             val covidCases = repository.getCovidCasesByLocation(city, country)
+            Log.v(StatisticsViewModel::class.java.simpleName, "Covid Cases: ${covidCases.vaccinatedMessage}, ${covidCases.vaccinatedNum}, ${covidCases.doubleVaccinatedNum}" +
+                    ", ${covidCases.message}")
             stats.value = covidCases
         }
     }
-
 }

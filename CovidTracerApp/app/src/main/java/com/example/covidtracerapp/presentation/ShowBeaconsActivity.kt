@@ -14,14 +14,12 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.os.RemoteException
-import android.text.Html
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -29,9 +27,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.covidtracerapp.*
 import com.example.covidtracerapp.R
 import com.example.covidtracerapp.Utils.generateUidNamespace
@@ -42,8 +40,10 @@ import com.example.covidtracerapp.presentation.model.Location
 import com.example.covidtracerapp.presentation.model.MyBeacon
 import com.example.covidtracerapp.presentation.model.User
 import com.example.covidtracerapp.presentation.model.toMyBeacon
+import com.example.covidtracerapp.ui.home.HomeViewModel
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
@@ -54,7 +54,6 @@ import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
 import org.koin.android.viewmodel.ext.android.viewModel
-import java.lang.UnsupportedOperationException
 import java.util.*
 
 
@@ -70,12 +69,11 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private val mapViewModel: MapViewModel by viewModel()
     private val viewModel : ShowBeaconsViewModel by viewModel()
+    private val homeViewModel: HomeViewModel by viewModels()
     private val timedSimulator = TimedBeaconSimulator()
 
     private var locationPermissionGranted: Boolean = false
 //    var fusedLocationProviderClient: FusedLocationProviderClient? = null
-
-    private var currentUser: User? = null
 
     val fusedLocationProviderClient: FusedLocationProviderClient by lazy {
         LocationServices.getFusedLocationProviderClient(this)
@@ -88,8 +86,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     private val beaconManager = BeaconManager.getInstanceForApplication(this)
     var remoteBeaconsIds: MutableSet<MyBeacon> = mutableSetOf()
-    private var adapter: BeaconsAdapter =
-        BeaconsAdapter(listOf())
+//    private var adapter: BeaconsAdapter =
+//        BeaconsAdapter(listOf())
     private var contactedSet: MutableSet<String> = mutableSetOf()
 
     //ActivityResultAPI
@@ -119,7 +117,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
+//        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
@@ -128,14 +126,12 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
             var intent = Intent(this, MapActivity::class.java)
             startActivity(intent)
         }
-        if (item.itemId == R.id.statsIcon){
-            var intent = Intent(this, StatisticsActivity::class.java)
-            intent.putExtra("USER", currentUser)
-            startActivity(intent)
-        }
         return true
     }
-
+    private fun setupBottomNavMenu(navController: NavController) {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav?.setupWithNavController(navController)
+    }
     private fun createNotification(id: String?) {
 
         createNotificationChannel()
@@ -178,26 +174,30 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        currentUser = intent.getSerializableExtra("USER") as? User
-        userIdTv.text = currentUser?.id
-        userPhoneTv.text = currentUser?.phone
-        userCountryTv.text = currentUser?.location?.country
-        userCityTv.text = currentUser?.location?.city
-        userStatusTv.text = when(currentUser?.positive){
-            true -> {
-                userStatusTv.setTextColor(Color.parseColor("#FF0000"))
-                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_coronavirus, 0, 0, 0);
-                "Infected"
-            }
-            false -> {
-                userStatusTv.setTextColor(Color.parseColor("#8BC34A"))
-                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_healthy, 0, 0, 0);
-                "Not infected"
-            }
-            null -> throw UnsupportedOperationException()
+        val currentUser = intent.getSerializableExtra("USER") as? User
+        if (currentUser != null) {
+            homeViewModel.user.value = currentUser
         }
+        setContentView(R.layout.activity_main2)
+
+
+//        userIdTv.text = currentUser?.id
+//        userPhoneTv.text = currentUser?.phone
+//        userCountryTv.text = currentUser?.location?.country
+//        userCityTv.text = currentUser?.location?.city
+//        userStatusTv.text = when(currentUser?.positive){
+//            true -> {
+//                userStatusTv.setTextColor(Color.parseColor("#FF0000"))
+//                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_coronavirus, 0, 0, 0);
+//                "Infected"
+//            }
+//            false -> {
+//                userStatusTv.setTextColor(Color.parseColor("#8BC34A"))
+//                userStatusTv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_healthy, 0, 0, 0);
+//                "Not infected"
+//            }
+//            null -> throw UnsupportedOperationException()
+//        }
 
 
         USER_CITY = currentUser?.location!!.city
@@ -205,8 +205,13 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         USER_ID = currentUser!!.id
         USER_LOCATION = currentUser!!.location
 
-        beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
-        beaconsRecyclerView.adapter = adapter
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment? ?: return
+        val navController = host.navController
+        setupBottomNavMenu(navController)
+
+//        beaconsRecyclerView.layoutManager = LinearLayoutManager(this)
+//        beaconsRecyclerView.adapter = adapter
 
         //TODO: Inserting fake contactedEntity for checking firebase notifications
 //        viewModel.insertContacted(ContactedEntity("010101000006",59.3, 71.0, Calendar.getInstance().time))
@@ -223,6 +228,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         mapViewModel.locationsState.observe(this, Observer {
             when (it) {
                 is Resource.Success -> {
+                    Log.v(TAG, "Hotspots added")
                     hotspots = it.data
                     addGeofences(hotspots)
                 }
@@ -239,18 +245,18 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 //                USER_COUNTRY
 //            )
 //        }
-
-        selfReveal.setOnClickListener {
-            viewModel.selfReveal(
-                USER_ID
-            )
-            viewModel.updateUser(USER_ID)
-        }
-
-        swipeRefresh.setOnRefreshListener {
-            viewModel.updateUser(USER_ID)
-            swipeRefresh.isRefreshing = false
-        }
+//
+//        selfReveal.setOnClickListener {
+//            viewModel.selfReveal(
+//                USER_ID
+//            )
+//            viewModel.updateUser(USER_ID)
+//        }
+//
+//        swipeRefresh.setOnRefreshListener {
+//            viewModel.updateUser(USER_ID)
+//            swipeRefresh.isRefreshing = false
+//        }
 
 //        imgMap.setOnClickListener{
 //            var intent = Intent(this, MapActivity::class.java)
@@ -267,7 +273,8 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         viewModel.userState.observe(this, Observer {
             when (it) {
                 is Resource.Success -> {
-                    updateUserUi(it.data)
+                    homeViewModel.user.value = it.data
+//                    updateUserUi(it.data)
                 }
 
                 is Resource.Error -> showError(it.message)
@@ -276,18 +283,18 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
 
         viewModel.listOfPositive.observe(this, androidx.lifecycle.Observer {
             var users = ""
-            for (user in it){
+            for (user in it) {
                 users = users + user + "\n\n"
             }
-            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
+//            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
 
         viewModel.intersection.observe(this, androidx.lifecycle.Observer {
             var users = ""
-            for (user in it){
+            for (user in it) {
                 users = users + user + "\n\n"
             }
-            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
+//            Toast.makeText(applicationContext, users, Toast.LENGTH_LONG).show()
         })
 
 
@@ -299,7 +306,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     msg = getString(R.string.msg_subscribe_failed)
                 }
                 Log.d(TAG, msg)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -338,35 +345,35 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                 }.show()
     }
     @SuppressLint("MissingPermission")
-    private fun addGeofences(listOfHotspots : List<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>){
-//        // TODO: Check for both fine and background ?
-//        if (!checkLocationPermissions()) return
-//        val listOfGeofences = mutableListOf<Geofence>()
-//
-//        for (hotspot in listOfHotspots){
-//            Log.d(TAG, "addGeofences: adding Geofence" + hotspot.latitude + " - " + hotspot.longitude)
-//            val geofence = Geofence.Builder()
-//                    .setRequestId(LatLng(hotspot.latitude, hotspot.longitude).toString())
-//                    .setCircularRegion(hotspot.latitude, hotspot.longitude, hotspot.radius.toFloat())
-//                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-//                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-//                    .build()
-//            listOfGeofences.add(geofence)
-//        }
-//
-//        val geofenceRequest = GeofencingRequest.Builder()
-//                .addGeofences(listOfGeofences)
-//                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-//                .build()
-//
-////        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent).run {
-////            addOnSuccessListener {
-////                Log.i(TAG, "addGeofences: Success")
-////            }
-////            addOnFailureListener {
-////                Log.i(TAG, "addGeofences: Failure")
-////            }
-////        }
+    private fun addGeofences(listOfHotspots: List<com.example.covidtracerapp.presentation.model.HotSpotCoordinate>){
+        // TODO: Check for both fine and background ?
+        if (!checkLocationPermissions()) return
+        val listOfGeofences = mutableListOf<Geofence>()
+        val filteredlist = listOfHotspots.filter { c -> c.radius > 0 }
+        for (hotspot in filteredlist){
+            Log.d(TAG, "addGeofences: adding Geofence" + hotspot.latitude + " - " + hotspot.longitude)
+            val geofence = Geofence.Builder()
+                    .setRequestId(LatLng(hotspot.latitude, hotspot.longitude).toString())
+                    .setCircularRegion(hotspot.latitude, hotspot.longitude, hotspot.radius.toFloat())
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                    .build()
+            listOfGeofences.add(geofence)
+        }
+
+        val geofenceRequest = GeofencingRequest.Builder()
+                .addGeofences(listOfGeofences)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .build()
+
+        geofencingClient.addGeofences(geofenceRequest, geofencePendingIntent).run {
+            addOnSuccessListener {
+                Log.i(TAG, "addGeofences: Success")
+            }
+            addOnFailureListener {
+                Log.i(TAG, "addGeofences: Failure")
+            }
+        }
     }
     private fun updateUserUi(currentUser: User){
         userIdTv.text = currentUser?.id
@@ -476,22 +483,21 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
         val permissions = arrayOf<String>(FINE_LOCATION, COARSE_LOCATION)
         if (locationPermissionGranted){
             if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
+                            this,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
-                    this,
-                    permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE
+                        this,
+                        permissions,
+                        LOCATION_PERMISSION_REQUEST_CODE
                 )
             }
 
         }
-
         val location = fusedLocationProviderClient.lastLocation
         var latLng: LatLng? = null
         location?.addOnCompleteListener { task ->
@@ -500,7 +506,7 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                 Log.v(TAG, "getCurrentLocation:Success ${currentLocation.latitude} ${currentLocation.longitude}")
                 LatLng(currentLocation.latitude, currentLocation.longitude).also { latLng = it }
                 viewModel.sendLocationOfHotspot(currentLocation.latitude, currentLocation.longitude)
-                viewModel.insertContacted(ContactedEntity(id.substring(2,14),currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
+                viewModel.insertContacted(ContactedEntity(id.substring(2, 14), currentLocation.latitude, currentLocation.longitude, Calendar.getInstance().time))
 
             }else Log.v(TAG, "getCurrentLocation:Error")
         }
@@ -523,19 +529,20 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
                     }
                     remoteBeaconsIds.add(myb)
                 }
-                adapter.updateList(remoteBeaconsIds.toMutableList())
+//                adapter.updateList(remoteBeaconsIds.toMutableList())
+                homeViewModel.beacons.value = remoteBeaconsIds
             }else{
                 Log.d(TAG, "onBeaconServiceConnect: ISEMPTY")
             }
         }
         try {
             beaconManager.startRangingBeaconsInRegion(
-                Region(
-                    "myRangingUniqueId",
-                    null,
-                    null,
-                    null
-                )
+                    Region(
+                            "myRangingUniqueId",
+                            null,
+                            null,
+                            null
+                    )
             )
             beaconManager.addRangeNotifier(rangeNotifier)
         } catch (e: RemoteException) {
@@ -553,50 +560,50 @@ class ShowBeaconsActivity : AppCompatActivity(), BeaconConsumer {
     }
 }
 
-class BeaconsAdapter (
-    private var beacons: List<MyBeacon>) : RecyclerView.Adapter<BeaconsAdapter.BeaconsViewHolder>() {
-
-    companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<MyBeacon>() {
-
-            override fun areItemsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
-                return oldItem.id1 == newItem.id1
-            }
-
-            override fun areContentsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
-                return oldItem.distance == newItem.distance
-            }
-        }
-    }
-
-    class BeaconsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val beaconId : TextView = itemView.userIdTv
-        val beaconDistance: TextView = itemView.userDistanceTv
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeaconsViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.table_row_layout,
-            parent, false)
-        return BeaconsViewHolder(
-            itemView
-        )
-    }
-
-    override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
-        val currentItem = beacons[position]
-        holder.beaconId.text = currentItem.id1.toString().substring(2, 14)
-        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " m"
-    }
-
-    override fun getItemCount(): Int {
-        return beacons.size
-    }
-
-    fun updateList(newList: List<MyBeacon>){
-        beacons = newList.sortedBy { it.id1 }
-        notifyDataSetChanged()
-    }
-}
+//class BeaconsAdapter (
+//    private var beacons: List<MyBeacon>) : RecyclerView.Adapter<BeaconsAdapter.BeaconsViewHolder>() {
+//
+//    companion object {
+//        private val diffUtil = object : DiffUtil.ItemCallback<MyBeacon>() {
+//
+//            override fun areItemsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
+//                return oldItem.id1 == newItem.id1
+//            }
+//
+//            override fun areContentsTheSame(oldItem: MyBeacon, newItem: MyBeacon): Boolean {
+//                return oldItem.distance == newItem.distance
+//            }
+//        }
+//    }
+//
+//    class BeaconsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+//        val beaconId : TextView = itemView.userIdTv
+//        val beaconDistance: TextView = itemView.userDistanceTv
+//    }
+//
+//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeaconsViewHolder {
+//        val itemView = LayoutInflater.from(parent.context).inflate(
+//            R.layout.table_row_layout,
+//            parent, false)
+//        return BeaconsViewHolder(
+//            itemView
+//        )
+//    }
+//
+//    override fun onBindViewHolder(holder: BeaconsViewHolder, position: Int) {
+//        val currentItem = beacons[position]
+//        holder.beaconId.text = currentItem.id1.toString().substring(2, 14)
+//        holder.beaconDistance.text = String.format("%.1f", currentItem.distance) + " m"
+//    }
+//
+//    override fun getItemCount(): Int {
+//        return beacons.size
+//    }
+//
+//    fun updateList(newList: List<MyBeacon>){
+//        beacons = newList.sortedBy { it.id1 }
+//        notifyDataSetChanged()
+//    }
+//}
 
 

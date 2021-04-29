@@ -1,10 +1,10 @@
 <resources>
-        <style name="table_header" parent="@android:style/TextAppearance.Small">
-        <item name="android:textStyle">bold</item>
+    <style name="table_header">
+        <item name="android:textAppearance">?textAppearanceHeadline6</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:textColor">?colorOnPrimary</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">#60A7B9</item>
         <item name="android:layout_marginRight">1dp</item>
         <item name="android:layout_marginEnd">1dp</item>
         <item name="android:paddingStart">10dp</item>
@@ -12,14 +12,19 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
     </style>
-    <style name="table_row_item" parent="@android:style/TextAppearance.Small">
+
+    <style name="table_row_item">
         <item name="android:gravity">center</item>
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:layout_marginRight">1dp</item>
         <item name="android:layout_marginEnd">1dp</item>
         <item name="android:paddingStart">10dp</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:layout_height">30dp</item>
     </style>
+
     <style name="user_info_tv_first_row">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">0.5</item>
@@ -29,5 +34,22 @@
         <item name="android:textAppearance">?textAppearanceHeadline6</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="user_info_tv_second_row">
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingTop">   4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">?colorOnSurface</item>
+        <item name="android:textAppearance">?textAppearanceBody1</item>
+    </style>
 
+    <style name="Widget.AppCompat.Button.Accent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="backgroundTint">?colorSecondary</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>

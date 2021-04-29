@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/statistics_dest"
+        android:title="Stats"
+        android:icon="@drawable/sharp_bar_chart_24"/>
+    <item
+        android:id="@+id/home_dest"
+        android:title="Home"
+        android:icon="@drawable/ic_action_home"
+        />
+    <item
+        android:id="@+id/hotspots_dest"
+        android:title="Hotspots"
+        android:icon="@drawable/ic_baseline_map_24"/>
+</menu>

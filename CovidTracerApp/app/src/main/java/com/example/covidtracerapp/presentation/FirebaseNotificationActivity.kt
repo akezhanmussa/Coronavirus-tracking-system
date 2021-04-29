@@ -31,13 +31,11 @@ class FirebaseNotificationActivity : AppCompatActivity() {
                     textView3.isVisible = true
                     textView4.isVisible = true
                     Log.v(TAG, "Resource.Success")
-                    tvPresentInLocalList.text = getString(R.string.present_in_list)
                     tvLocationLat.text = it.data.lat.toString()
                     tvLocationLon.text = it.data.lon.toString()
                 }
                 else -> {
                     Log.v(TAG, "Resource.Fail")
-                    tvPresentInLocalList.text = getString(R.string.not_present_in_list)
                     textView3.isVisible = false
                     textView4.isVisible = false
                 }

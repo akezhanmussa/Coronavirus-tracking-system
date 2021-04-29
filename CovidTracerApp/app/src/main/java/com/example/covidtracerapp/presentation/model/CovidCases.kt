@@ -7,5 +7,8 @@ data class CovidCases(
     val gotSickNumPCRminus: Int,
     val recoverdNumPCRminus: Int,
     val diedNumPCRminus: Int,
-    val message: String
+    val message: String,
+    val vaccinatedMessage: String,
+    val vaccinatedNum: Int,
+    val doubleVaccinatedNum: Int
 )
