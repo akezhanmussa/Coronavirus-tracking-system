@@ -3,7 +3,6 @@ package com.senior.server.services;
 import com.senior.server.configurations.StatisticsConfiguration;
 import com.senior.server.domain.CovidCases;
 import com.senior.server.domain.Location;
-import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -42,6 +41,36 @@ public class StatisticsServiceImpl implements StatisticsService{
             this.document = null;
         }
     }
+
+    private void extractVaccinatedNums(Location location, CovidCases covidCases) {
+        int[] result = new int[2];
+        Elements elements = this.document.select("div.table_info_cont.tabl_vactination").first().select("tbody").select("tr");
+        Integer headerNumToSkip = 3;
+        Integer cityLimit = 2;
+        Integer index = 0;
+        String message = elements.last().select("td").get(2).text();
+
+        for (Element rowElement: elements) {
+            if (index >= headerNumToSkip + cityLimit) {
+                break;
+            }
+            if (index >= headerNumToSkip) {
+                Elements colElements = rowElement.select("td");
+                Integer iterIndex = 0;
+                String cityName = colElements.get(iterIndex++).text().substring(3);
+                if (location.getCity().equals(cityMapper.get(cityName))) {
+                    Integer vaccinatedNum = Integer.parseInt(colElements.get(iterIndex++).text());
+                    Integer doubleVaccinatedNum = Integer.parseInt(colElements.get(iterIndex++).text());
+
+                    covidCases.setVaccinatedNum(vaccinatedNum);
+                    covidCases.setDoubleVaccinatedNum(doubleVaccinatedNum);
+                    covidCases.setVaccinatedMessage(message);
+                }
+            }
+            index += 1;
+        }
+    }
+
 
     @Override
     public CovidCases retrieveCovidCases(Location location) {
@@ -87,7 +116,8 @@ public class StatisticsServiceImpl implements StatisticsService{
 
                         result.setMessage(message);
 
-                        return result;
+                       this.extractVaccinatedNums(location, result);
+                       return result;
                     }
                 }
                 index += 1;

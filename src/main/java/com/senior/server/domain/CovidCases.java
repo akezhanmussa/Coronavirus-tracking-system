@@ -7,7 +7,18 @@ public class CovidCases {
     private int gotSickNumPCRminus;
     private int recoveredNumPCRminus;
     private int diedNumPCRminus;
+    private int vaccinatedNum;
+    private int doubleVaccinatedNum;
     private String message;
+    private String vaccinatedMessage;
+
+    public String getVaccinatedMessage() {
+        return vaccinatedMessage;
+    }
+
+    public void setVaccinatedMessage(String vaccinatedMessage) {
+        this.vaccinatedMessage = vaccinatedMessage;
+    }
 
     public String getMessage() {
         return message;
@@ -63,5 +74,21 @@ public class CovidCases {
 
     public void setDiedNumPCRminus(int diedNumPCRminus) {
         this.diedNumPCRminus = diedNumPCRminus;
+    }
+
+    public int getVaccinatedNum() {
+        return vaccinatedNum;
+    }
+
+    public void setVaccinatedNum(int vaccinatedNum) {
+        this.vaccinatedNum = vaccinatedNum;
+    }
+
+    public int getDoubleVaccinatedNum() {
+        return doubleVaccinatedNum;
+    }
+
+    public void setDoubleVaccinatedNum(int doubleVaccinatedNum) {
+        this.doubleVaccinatedNum = doubleVaccinatedNum;
     }
 }
