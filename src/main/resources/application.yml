@@ -12,3 +12,5 @@ spring:
     mongodb:
       uri: mongodb+srv://user_max:LXyrGuRfH8Q5Rysk@seniorprojectdb.iqfpg.mongodb.net/SeniorProjectDB?retryWrites=true&w=majority
       database: SeniorProjectDB
+statistics:
+  urlSource: "https://www.coronavirus2020.kz"
