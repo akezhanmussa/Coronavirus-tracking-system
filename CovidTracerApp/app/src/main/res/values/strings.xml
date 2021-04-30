@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">CovidTracerApp</string>
     <string name="login">LOGIN</string>
+    <string name="google_map_api_key">AIzaSyAuKeYLHnAXbuR5kGm4OX_buYsp8laQNHY</string>
     <string name="sending_local_list">Check My Person List</string>
+
+    <!--Geofencing-START-->
+    <string name="geofence_notification_title">Hotspot Notification</string>
+    <string name="geofence_notification_text">You are in a Hotspot! Consider leaving this place.</string>
+    <string name="geofence_notification_channel_name">Hotspot Channel</string>
+    <string name="geofence_notification_channel_description">Hotspot notifications</string>
+
+    <string name="permission_denied_explanation">Grant background location permission by selecting "Allow all the time"</string>
+    <string name="settings">Settings</string>
+    <!--Geofencing-END-->
+
+    <string name="msg_subscribed">Subscribed to topic</string>
+    <string name="msg_subscribe_failed">Topic subscription failed</string>
+    <string name="id_or_password_incorrect">ID or password incorrect</string>
+    <string name="your_password">Your Password</string>
+    <string name="your_id">Your ID</string>
 </resources>

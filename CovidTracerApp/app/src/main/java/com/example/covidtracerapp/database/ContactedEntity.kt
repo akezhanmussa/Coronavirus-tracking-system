@@ -9,4 +9,10 @@ import kotlinx.android.parcel.Parcelize
 
 const val ContactedTable = "contacted"
 @Entity(tableName = ContactedTable)
-data class ContactedEntity(@PrimaryKey val id: String, val contactedAt: Date)
+data class ContactedEntity(
+    @PrimaryKey
+    val id: String,
+    val lat: Double?,
+    val lon: Double?,
+    val contactedAt: Date
+    )

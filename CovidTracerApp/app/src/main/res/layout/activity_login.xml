@@ -5,73 +5,132 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    >
+        android:layout_height="wrap_content">
+
 
         <com.google.android.material.textfield.TextInputLayout
-                android:layout_margin="15dp"
-                android:id="@+id/loginField"
-                android:hint="Your ID"
-                android:textColorHint="@android:color/background_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:boxStrokeColor="@android:color/background_dark"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                app:layout_constraintHorizontal_bias="0.482" app:layout_constraintVertical_bias="0.648">
-
-            <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/loginEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-        <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:text="@string/login"
-                android:textColor="@android:color/white"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:backgroundTint="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="@+id/loginField"
-                app:layout_constraintStart_toStartOf="@+id/loginField"
-                app:layout_constraintTop_toBottomOf="@+id/loginField" app:layout_constraintHorizontal_bias="0.495"
-                android:fontFamily="@font/coda"/>
-        <FrameLayout
-            android:id="@+id/loaderLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="gone"
+            android:id="@+id/passwordField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
+            android:hint="@string/your_password"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.533"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.709"
+            app:passwordToggleEnabled="true">
 
-            <ProgressBar
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordEt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:inputType="textPassword" />
 
-        </FrameLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/loginField"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="15dp"
+            android:hint="@string/your_id"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.875">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <Button-->
+<!--            android:id="@+id/loginBtn"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:backgroundTint="@color/colorPrimary"-->
+<!--            android:fontFamily="@font/coda"-->
+<!--            android:text="@string/login"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/passwordField"-->
+<!--            app:layout_constraintHorizontal_bias="0.495"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/passwordField"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/passwordField" />-->
+
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+
+            android:id="@+id/loginBtnProgress"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="52dp"
+            android:background="@drawable/ic_login_button"
+            android:backgroundTint="?colorPrimary"
+            android:text="@string/login"
+            android:textColor="?colorOnPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:initialCornerAngle="4dp"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField"
+            app:spinning_bar_color="@android:color/white" />
+
         <ImageView
-                android:layout_width="240dp"
-                android:layout_height="214dp" app:srcCompat="@drawable/social_distancing"
-                android:id="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/loginField" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/imageView"
+            android:layout_width="240dp"
+            android:layout_height="214dp"
+            app:layout_constraintBottom_toTopOf="@+id/passwordField"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.265"
+            app:srcCompat="@drawable/social_distancing" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvIncorrectCredentials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/id_or_password_incorrect"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/passwordField"
+            app:layout_constraintTop_toBottomOf="@+id/passwordField" />
 
+        <ImageView
+            android:id="@+id/ivIncorrectCredentials"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="35dp"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/tvIncorrectCredentials"
+            app:layout_constraintEnd_toEndOf="@+id/passwordField"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvIncorrectCredentials"
+            app:layout_constraintTop_toTopOf="@+id/tvIncorrectCredentials"
+            app:srcCompat="@drawable/error_sign" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -1,37 +1,54 @@
 package com.example.covidtracerapp.api
 
+import com.example.covidtracerapp.presentation.model.CovidCases
+import com.example.covidtracerapp.presentation.model.HotSpotCoordinate
 import com.example.covidtracerapp.presentation.model.User
 import io.reactivex.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 
 interface CovidApi {
-//    url = google.com/api/v1/
-//
-//    @GET("/qod") //google.com/qod
-//    @GET("qod")//google.com/api/v1/qod
-
-//    https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json
-//    https://google.com/api/search?q=123123
 
     @POST("api/database-check")
-    suspend fun login(@Body id: Map<String, String>): Map<String, Object>
+    suspend fun login(@Header("Authorization") token: String,
+                      @Body id: Map<String, String>): User
+
+    @POST("data-api/set-to-be-infected")
+    suspend fun selfReveal(@Header("Authorization") token: String,
+                           @Body id: Map<String, String>)
 
     @GET("data-api/get-all-positive")
     fun getPositive() : Observable<List<String>>
 
+    @GET("data-api/hotspotsV2")
+    suspend fun getHotspotsByLocation(@Header("Authorization") token: String,
+                                      @Query("city") city: String,
+                                      @Query("country") country: String,
+                                      @Query("limit") limit: Int = 15) : List<HotSpotCoordinate>
+
     @POST("data-api/get-all-positive-by-location")
-    fun getPositiveByLocation(@Body location: Map<String, String>) : Observable<List<User>>
+    fun getPositiveByLocation(@Header("Authorization") token: String,
+                              @Body location: Map<String, String>) : Observable<List<User>>
 
     @POST("data-api/check-positive-with-my-list")
-    suspend fun sendContactedIds(@Query("city") city: String,
+    suspend fun sendContactedIds(@Header("Authorization") token: String,
+                                 @Query("city") city: String,
                                  @Query("country") country: String,
                                  @Body ids: List<String>) : List<User>
 
-//    @GET("history")
-//    suspend fun getDetails(@Query("country") country: String): DetailsRemoteDTOX
+    @POST("data-api/new-case")
+    suspend fun sendLocationOfHotspot(@Header("Authorization") token: String,
+                                      @Body body: Map<String, Double>)
+
+
+    @POST("statistics/covid-cases-by-location")
+    suspend fun getCovidCasesByLocation(@Header("Authorization") token: String,
+                                        @Body body: Map<String, String>) : CovidCases
+
 }
