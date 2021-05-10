@@ -29,8 +29,8 @@ public class HotSpotModificationServiceImpl implements HotSpotModificationServic
     @Override
     public void clearHotSpots() {
         this.grid = new HotSpot[GRID_LEN][GRID_LEN];
-        latitudes = new LineSpace(43.134457,43.397272, GRID_LEN + 1); // Astana: 51.024901, 51.227157
-        longtitudes = new LineSpace( 76.743720, 77.112807, GRID_LEN + 1); // Almaty: 71.297808, 71.592204
+        latitudes = new LineSpace(50.942685, 51.227157, GRID_LEN + 1);
+        longtitudes = new LineSpace( 71.297808, 71.592204, GRID_LEN + 1);
         latitudes.process();
         longtitudes.process();
         this.gridInit();
